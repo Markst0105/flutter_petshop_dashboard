@@ -1,139 +1,139 @@
-# Pet Shop Worker Dashboard - Flutter Version
+# Painel do Funcionário de Pet Shop - Versão Flutter
 
-A Flutter app for pet shop workers to manage schedules, view appointments, and manage pricing.
+Um aplicativo Flutter para funcionários de pet shops gerenciarem agendas, visualizarem compromissos e gerenciarem preços.
 
-## Features
+## Funcionalidades
 
-- **Login Screen**: Easy access to different dashboard sections
-- **Schedule Screen**: View today's appointments with detailed booking information
-- **Calendar Screen**: Browse appointments across different dates
-- **Financial Screen**: Manage services and pricing for different pet sizes
+- **Tela de Login**: Acesso fácil a diferentes seções do painel
+- **Tela de Agenda**: Visualize os compromissos de hoje com informações detalhadas da reserva
+- **Tela de Calendário**: Navegue pelos compromissos em diferentes datas
+- **Tela Financeira**: Gerencie serviços e preços para diferentes portes de animais
 
-## Project Structure
+## Estrutura do Projeto
 
 ```
 lib/
-├── main.dart                 # App entry point
+├── main.dart                 # Ponto de entrada do aplicativo
 ├── providers/
-│   └── app_state.dart       # State management with Provider
+│   └── app_state.dart       # Gerenciamento de estado com Provider
 ├── models/
-│   ├── booking.dart         # Booking data model
-│   └── service.dart         # Service data model
+│   ├── booking.dart         # Modelo de dados de reserva
+│   └── service.dart         # Modelo de dados de serviço
 ├── screens/
-│   ├── app.dart             # Main app shell
-│   ├── login_screen.dart    # Login/entry point
-│   ├── schedule_screen.dart # Today's schedule view
-│   ├── calendar_screen.dart # Calendar view
-│   └── financial_screen.dart # Services & pricing
+│   ├── app.dart             # Estrutura principal do aplicativo
+│   ├── login_screen.dart    # Tela de login/ponto de entrada
+│   ├── schedule_screen.dart # Visualização da agenda de hoje
+│   ├── calendar_screen.dart # Visualização do calendário
+│   └── financial_screen.dart # Serviços e preços
 └── widgets/
-    ├── header.dart          # App header with navigation
-    └── booking_card.dart    # Booking detail card
+    ├── header.dart          # Cabeçalho do aplicativo com navegação
+    └── booking_card.dart    # Cartão de detalhes da reserva
 ```
 
-## Getting Started
+## Começando
 
-### Prerequisites
+### Pré-requisitos
 
-- Flutter SDK 3.0.0 or higher
-- Dart SDK (comes with Flutter)
+- Flutter SDK 3.0.0 ou superior
+- Dart SDK (vem com o Flutter)
 
-### Installation
+### Instalação
 
-1. **Clone the repository** (or extract the files)
+1. **Clone o repositório** (ou extraia os arquivos)
    ```bash
    cd flutter_petshop_dashboard
    ```
 
-2. **Get dependencies**
+2. **Obtenha as dependências**
    ```bash
    flutter pub get
    ```
 
-3. **Run the app**
+3. **Execute o aplicativo**
    ```bash
    flutter run
    ```
 
-   For web:
+   Para web:
    ```bash
    flutter run -d chrome
    ```
 
-## Dependencies
+## Dependências
 
-- **provider**: State management
-- **intl**: Internationalization (Portuguese locale)
-- **table_calendar**: Calendar widget
-- **fl_chart**: Charts and graphs (for future financial features)
-- **animations**: Smooth transitions
+- **provider**: Gerenciamento de estado
+- **intl**: Internacionalização (localidade em português)
+- **table_calendar**: Widget de calendário
+- **fl_chart**: Gráficos e diagramas (para futuras funcionalidades financeiras)
+- **animations**: Transições suaves
 
-## Key Features Implemented
+## Principais Funcionalidades Implementadas
 
-### Login Screen
-- Logo display
-- Navigation buttons to Schedule, Calendar, and Financial sections
-- Clean UI with Portuguese language support
+### Tela de Login
+- Exibição do logotipo
+- Botões de navegação para as seções de Agenda, Calendário e Financeiro
+- Interface limpa com suporte ao idioma português
 
-### Schedule Screen
-- View today's bookings
-- Expandable booking cards showing full details
-- Status indicators (Upcoming, In Progress, Completed, Cancelled)
-- Pet and owner information
-- Service procedures list
-- Notes/comments section
+### Tela de Agenda
+- Visualize as reservas de hoje
+- Cartões de reserva expansíveis mostrando detalhes completos
+- Indicadores de status (Próximo, Em Andamento, Concluído, Cancelado)
+- Informações do animal e do proprietário
+- Lista de procedimentos do serviço
+- Seção de notas/comentários
 
-### Calendar Screen
-- Monthly calendar view
-- Appointment density indicators
-- Selected date details
-- Appointment count for each day
-- Portuguese date formatting
+### Tela de Calendário
+- Visualização mensal do calendário
+- Indicadores de densidade de compromissos
+- Detalhes da data selecionada
+- Contagem de compromissos para cada dia
+- Formatação de data em português
 
-### Financial Screen
-- Service catalog with pricing for different pet sizes
-- Add/remove services from total
-- Real-time total calculation
-- Pet size selector (Small, Medium, Large)
-- Service management interface
+### Tela Financeira
+- Catálogo de serviços com preços para diferentes portes de animais
+- Adicionar/remover serviços do total
+- Cálculo do total em tempo real
+- Seletor de porte do animal (Pequeno, Médio, Grande)
+- Interface de gerenciamento de serviços
 
-## Architecture
+## Arquitetura
 
-### State Management
-Uses Provider package for simple and efficient state management:
-- `AppState` - Manages login status and current screen navigation
+### Gerenciamento de Estado
+Usa o pacote Provider para um gerenciamento de estado simples e eficiente:
+- `AppState` - Gerencia o status de login e a navegação da tela atual
 
-### Theming
+### Temas
 - Material Design 3
-- Blue color scheme matching the original design
-- Responsive layout using Expanded and Flex
+- Esquema de cores azul combinando com o design original
+- Layout responsivo usando Expanded e Flex
 
-### Localization
-- Portuguese (Brazil) date formatting using `intl` package
-- All UI text in Portuguese
+### Localização
+- Formatação de data em português (Brasil) usando o pacote `intl`
+- Todo o texto da interface em português
 
-## Customization
+## Customização
 
-### Changing Mock Data
-- Bookings: Edit `lib/models/booking.dart`
-- Services: Edit `lib/models/service.dart`
-- Calendar data: Edit `_CalendarScreenState` in `lib/screens/calendar_screen.dart`
+### Alterando Dados Fictícios
+- Reservas: Edite `lib/models/booking.dart`
+- Serviços: Edite `lib/models/service.dart`
+- Dados do calendário: Edite `_CalendarScreenState` em `lib/screens/calendar_screen.dart`
 
-### Styling
-- Colors: Modify `seedColor` in `lib/main.dart`
-- Fonts: Add custom fonts in `pubspec.yaml` and update `fontFamily`
+### Estilização
+- Cores: Modifique `seedColor` em `lib/main.dart`
+- Fontes: Adicione fontes personalizadas em `pubspec.yaml` and update `fontFamily`
 
-## Future Enhancements
+## Melhorias Futuras
 
-- Backend integration for real appointment data
-- Push notifications for upcoming appointments
-- Photo gallery for pets
-- Payment integration
-- Analytics and reports
-- Multi-user support
-- Dark mode
-- Appointment booking from customer side
+- Integração com backend para dados de compromissos reais
+- Notificações push para compromissos futuros
+- Galeria de fotos para animais de estimação
+- Integração de pagamentos
+- Análises e relatórios
+- Suporte a múltiplos usuários
+- Modo escuro
+- Agendamento de compromissos pelo lado do cliente
 
-## Building for Production
+## Compilando para Produção
 
 ### Android
 ```bash
@@ -150,6 +150,6 @@ flutter build ios --release
 flutter build web --release
 ```
 
-## License
+## Licença
 
-This project is a Flutter port of the original Pet Shop Dashboard React app.
+Este projeto é uma adaptação em Flutter do aplicativo original Pet Shop Dashboard em React.
