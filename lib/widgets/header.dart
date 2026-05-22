@@ -30,7 +30,21 @@ class _HeaderState extends State<Header> {
     final dateString = formatter.format(DateTime.now());
 
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFEFF6FF), Color(0xFFF0FDF4)],
+        ),
+        border: Border(
+          bottom: BorderSide(color: const Color(0xFFDBEAFE), width: 1),
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x1A000000),
+            blurRadius: 3,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: SafeArea(
         child: Row(
@@ -38,17 +52,11 @@ class _HeaderState extends State<Header> {
             // Logo
             GestureDetector(
               onTap: widget.onLogoClick,
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade100,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Icon(
-                  Icons.pets,
-                  color: Colors.blue.shade600,
-                ),
+              child: Image.network(
+                'https://cdn.builder.io/api/v1/image/assets%2Ff1af6bdc9b6340ed933494acecf65fe5%2F35678fcd6a6440e0b559add086501a11?format=webp&width=800&height=1200',
+                width: 48,
+                height: 48,
+                fit: BoxFit.contain,
               ),
             ),
             const SizedBox(width: 16),
