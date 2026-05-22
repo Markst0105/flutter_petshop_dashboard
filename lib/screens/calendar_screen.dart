@@ -13,6 +13,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late PageController _pageController;
   late DateTime _focusedDay;
   late DateTime _selectedDay;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
 
   final appointmentDensity = {
     DateTime(2025, 10, 29): 4,
@@ -34,8 +35,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
-    _focusedDay = DateTime.now();
-    _selectedDay = DateTime.now();
+    final now = DateTime.now();
+    final firstDay = DateTime(2025, 1, 1);
+    final lastDay = DateTime(2025, 12, 31);
+    _focusedDay = now.isAfter(firstDay) && now.isBefore(lastDay) ? now : firstDay;
+    _selectedDay = _focusedDay;
     _pageController = PageController();
   }
 
@@ -67,6 +71,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 firstDay: DateTime(2025, 1, 1),
                 lastDay: DateTime(2025, 12, 31),
                 focusedDay: _focusedDay,
+                calendarFormat: _calendarFormat,
                 selectedDayPredicate: (day) {
                   return isSameDay(_selectedDay, day);
                 },
@@ -74,6 +79,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   setState(() {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
+                  });
+                },
+                onFormatChanged: (format) {
+                  setState(() {
+                    _calendarFormat = format;
                   });
                 },
                 onPageChanged: (focusedDay) {
