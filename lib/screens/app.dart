@@ -41,12 +41,14 @@ class App extends StatelessWidget {
                   onLogout: () => appState.logout(),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: const EdgeInsets.all(24),
-                      child: _buildScreen(appState.currentScreen),
-                    ),
-                  ),
+                  child: appState.currentScreen == 'schedule'
+                      ? _buildScreen(appState.currentScreen)
+                      : SingleChildScrollView(
+                          child: Container(
+                            padding: const EdgeInsets.all(24),
+                            child: _buildScreen(appState.currentScreen),
+                          ),
+                        ),
                 ),
               ],
             ),
