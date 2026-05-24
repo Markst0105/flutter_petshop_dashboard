@@ -31,6 +31,31 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     }
   }
 
+  void _updateBookingStatus(Booking booking, BookingStatus newStatus) {
+    setState(() {
+      final index = bookings.indexOf(booking);
+      if (index != -1) {
+        final updated = Booking(
+          id: booking.id,
+          startTime: booking.startTime,
+          endTime: booking.endTime,
+          startHour: booking.startHour,
+          duration: booking.duration,
+          ownerName: booking.ownerName,
+          ownerPhone: booking.ownerPhone,
+          petName: booking.petName,
+          petType: booking.petType,
+          petSize: booking.petSize,
+          procedures: booking.procedures,
+          status: newStatus,
+          comments: booking.comments,
+        );
+        bookings = List.from(bookings)..[index] = updated;
+        selectedBooking = bookings[index];
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final formatter = DateFormat("EEEE, d 'de' MMMM 'de' yyyy", 'pt_BR');
@@ -65,7 +90,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
               const SizedBox(height: 24),
               SizedBox(
-                height: 300,
+                height: 600,
                 child: _buildDetailsCard(),
               ),
             ],
@@ -155,14 +180,15 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   Widget _buildTimeSlot(int hour, Booking? booking, {bool isLast = false}) {
     final hasBooking = booking != null;
-    final slotHeight = hasBooking ? 160.0 : 80.0;
+    // Extra height for booking slots so the card content never overflows
+    final slotHeight = hasBooking ? 180.0 : 80.0;
     final timeLabel = '${hour.toString().padLeft(2, '0')}:00';
     final isCompleted = booking?.status == BookingStatus.completed;
 
     return SizedBox(
       height: slotHeight,
       child: Stack(
-        clipBehavior: Clip.none,
+        clipBehavior: Clip.hardEdge,
         children: [
           // Time label
           Positioned(
@@ -235,7 +261,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           width: 2,
         ),
       ),
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -269,7 +295,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               Text(
                 booking.petName,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.w500,
                   color: Color(0xFF0A0A0A),
                 ),
@@ -278,7 +304,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               Text(
                 '(${booking.petType})',
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   color: Color(0xFF4A5565),
                 ),
               ),
@@ -293,7 +319,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               Text(
                 booking.ownerName,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   color: Color(0xFF4A5565),
                 ),
               ),
@@ -304,9 +330,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           Wrap(
             spacing: 4,
             runSpacing: 4,
-            children: booking.procedures
-                .map((p) => _serviceTag(p))
-                .toList(),
+            children: booking.procedures.map((p) => _serviceTag(p)).toList(),
           ),
         ],
       ),
@@ -403,6 +427,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
+  // ──────────────────────────────────────────────────────────────
+  // Details / right-panel card
+  // ──────────────────────────────────────────────────────────────
+
   Widget _buildDetailsCard() {
     return Container(
       decoration: BoxDecoration(
@@ -441,10 +469,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.access_time_outlined,
               size: 64,
-              color: const Color(0xFFD1D5DC),
+              color: Color(0xFFD1D5DC),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -472,104 +500,200 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   Widget _buildBookingDetails(Booking booking) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              _statusIcon(booking.status),
-              const SizedBox(width: 8),
-              Text(
+          // ── Status section ──────────────────────────────────────
+          _buildStatusSection(booking),
+          const SizedBox(height: 16),
+
+          // ── Horário ─────────────────────────────────────────────
+          _buildInfoCard(
+            icon: const _ClockIcon(),
+            title: 'Horário',
+            child: Padding(
+              padding: const EdgeInsets.only(left: 32),
+              child: Text(
                 '${booking.startTime} - ${booking.endTime}',
                 style: const TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF4A5565),
-                ),
-              ),
-              const Spacer(),
-              _statusBadge(booking.status),
-            ],
-          ),
-          const SizedBox(height: 20),
-          const Divider(color: Color(0xFFE5E7EB)),
-          const SizedBox(height: 16),
-          // Pet info
-          Row(
-            children: [
-              const _PetIcon(),
-              const SizedBox(width: 8),
-              Text(
-                booking.petName,
-                style: const TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w400,
                   color: Color(0xFF0A0A0A),
                 ),
               ),
-              const SizedBox(width: 8),
-              Text(
-                '(${booking.petType})',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF4A5565),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          _detailRow(Icons.straighten, 'Porte', booking.petSize),
-          const SizedBox(height: 8),
-          const Divider(color: Color(0xFFE5E7EB)),
-          const SizedBox(height: 16),
-          // Owner info
-          Row(
-            children: [
-              const _OwnerIcon(),
-              const SizedBox(width: 8),
-              Text(
-                booking.ownerName,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF0A0A0A),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          _detailRow(Icons.phone_outlined, 'Telefone', booking.ownerPhone),
-          const SizedBox(height: 8),
-          const Divider(color: Color(0xFFE5E7EB)),
-          const SizedBox(height: 16),
-          // Services
-          const Text(
-            'Serviços',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF0A0A0A),
             ),
           ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 6,
-            runSpacing: 6,
-            children: booking.procedures.map((p) => _serviceTag(p)).toList(),
+          const SizedBox(height: 16),
+
+          // ── Informação do dono ───────────────────────────────────
+          _buildInfoCard(
+            icon: const Icon(
+              Icons.person_outline,
+              size: 20,
+              color: Color(0xFF4A5565),
+            ),
+            title: 'Informação do dono',
+            child: Padding(
+              padding: const EdgeInsets.only(left: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _labelValue('Nome', booking.ownerName),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Celular',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF4A5565),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        booking.ownerPhone,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF0A0A0A),
+                        ),
+                      ),
+                      const Spacer(),
+                      OutlinedButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.phone_outlined,
+                          size: 16,
+                          color: Color(0xFF0A0A0A),
+                        ),
+                        label: const Text(
+                          'Ligar',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF0A0A0A),
+                          ),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          side: BorderSide(
+                              color: Colors.black.withOpacity(0.10)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
+          const SizedBox(height: 16),
+
+          // ── Informação do pet ────────────────────────────────────
+          _buildInfoCard(
+            icon: const Icon(
+              Icons.pets,
+              size: 20,
+              color: Color(0xFF4A5565),
+            ),
+            title: 'Informação do pet',
+            child: Padding(
+              padding: const EdgeInsets.only(left: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _labelValue('Nome', booking.petName),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Tipo',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF4A5565),
+                              ),
+                            ),
+                            Text(
+                              booking.petType,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF0A0A0A),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Tamanho',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF4A5565),
+                              ),
+                            ),
+                            Text(
+                              booking.petSize,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF0A0A0A),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // ── Serviços ─────────────────────────────────────────────
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(17),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFE5E7EB)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Serviços',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF0A0A0A),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children:
+                      booking.procedures.map((p) => _serviceTag(p)).toList(),
+                ),
+              ],
+            ),
+          ),
+
           if (booking.comments.isNotEmpty) ...[
             const SizedBox(height: 16),
-            const Divider(color: Color(0xFFE5E7EB)),
-            const SizedBox(height: 16),
-            const Text(
-              'Observações',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF0A0A0A),
-              ),
-            ),
-            const SizedBox(height: 8),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(12),
@@ -578,62 +702,26 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: const Color(0xFFE5E7EB)),
               ),
-              child: Text(
-                booking.comments,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF4A5565),
-                ),
-              ),
-            ),
-          ],
-          if (booking.status == BookingStatus.upcoming ||
-              booking.status == BookingStatus.inProgress) ...[
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => setState(() {
-                  final index = bookings.indexOf(booking);
-                  if (index != -1) {
-                    bookings = List.from(bookings)
-                      ..[index] = Booking(
-                        id: booking.id,
-                        startTime: booking.startTime,
-                        endTime: booking.endTime,
-                        startHour: booking.startHour,
-                        duration: booking.duration,
-                        ownerName: booking.ownerName,
-                        ownerPhone: booking.ownerPhone,
-                        petName: booking.petName,
-                        petType: booking.petType,
-                        petSize: booking.petSize,
-                        procedures: booking.procedures,
-                        status: booking.status == BookingStatus.upcoming
-                            ? BookingStatus.inProgress
-                            : BookingStatus.completed,
-                        comments: booking.comments,
-                      );
-                    selectedBooking = bookings[index];
-                  }
-                }),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF155DFC),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Observações',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF0A0A0A),
+                    ),
                   ),
-                ),
-                child: Text(
-                  booking.status == BookingStatus.upcoming
-                      ? 'Iniciar atendimento'
-                      : 'Concluir atendimento',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                  const SizedBox(height: 8),
+                  Text(
+                    booking.comments,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF4A5565),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ],
@@ -642,20 +730,230 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  Widget _detailRow(IconData icon, String label, String value) {
-    return Row(
+  // ── Gradient status action card ─────────────────────────────────
+  Widget _buildStatusSection(Booking booking) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(17, 17, 17, 17),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [Color(0xFFEFF6FF), Color(0xFFF0FDF4)],
+        ),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFFBEDBFF)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Status do agendamento',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF4A5565),
+            ),
+          ),
+          const SizedBox(height: 12),
+          // Three status buttons
+          Row(
+            children: [
+              Expanded(
+                child: _statusActionButton(
+                  icon: Icons.radio_button_unchecked,
+                  label: 'Próximo',
+                  isActive: booking.status == BookingStatus.upcoming,
+                  onTap: () =>
+                      _updateBookingStatus(booking, BookingStatus.upcoming),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _statusActionButton(
+                  icon: Icons.play_circle_outline,
+                  label: 'Iniciar',
+                  isActive: booking.status == BookingStatus.inProgress,
+                  onTap: () =>
+                      _updateBookingStatus(booking, BookingStatus.inProgress),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _statusActionButton(
+                  icon: Icons.cancel_outlined,
+                  label: 'Cancelar',
+                  isActive: booking.status == BookingStatus.cancelled,
+                  onTap: () =>
+                      _updateBookingStatus(booking, BookingStatus.cancelled),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          // Concluir full-width button
+          SizedBox(
+            width: double.infinity,
+            child: Material(
+              color: const Color(0xFF030213),
+              borderRadius: BorderRadius.circular(8),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: () =>
+                    _updateBookingStatus(booking, BookingStatus.completed),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 9),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.check_circle_outline,
+                        size: 16,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        'Concluir',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _statusActionButton({
+    required IconData icon,
+    required String label,
+    required bool isActive,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isActive
+                  ? const Color(0xFF155DFC)
+                  : Colors.black.withOpacity(0.10),
+              width: isActive ? 1.5 : 1,
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: 16,
+                color: isActive
+                    ? const Color(0xFF155DFC)
+                    : const Color(0xFF0A0A0A),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: isActive
+                      ? const Color(0xFF155DFC)
+                      : const Color(0xFF0A0A0A),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ── Generic info card (Horário / Dono / Pet) ────────────────────
+  Widget _buildInfoCard({
+    required Widget icon,
+    required String title,
+    required Widget child,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(17),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              icon,
+              const SizedBox(width: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF0A0A0A),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          child,
+        ],
+      ),
+    );
+  }
+
+  Widget _labelValue(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 14, color: const Color(0xFF6A7282)),
-        const SizedBox(width: 6),
         Text(
-          '$label: ',
-          style: const TextStyle(fontSize: 13, color: Color(0xFF6A7282)),
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF4A5565),
+          ),
         ),
         Text(
           value,
-          style: const TextStyle(fontSize: 13, color: Color(0xFF0A0A0A)),
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF0A0A0A),
+          ),
         ),
       ],
+    );
+  }
+}
+
+// ── Small icon helpers ──────────────────────────────────────────────
+
+class _ClockIcon extends StatelessWidget {
+  const _ClockIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Icon(
+      Icons.access_time_outlined,
+      size: 20,
+      color: Color(0xFF155DFC),
     );
   }
 }
@@ -674,6 +972,6 @@ class _OwnerIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(Icons.person_outline, size: 12, color: Color(0xFF4A5565));
+    return const Icon(Icons.person_outline, size: 14, color: Color(0xFF4A5565));
   }
 }
