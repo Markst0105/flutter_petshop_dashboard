@@ -52,66 +52,212 @@ class _FinancialScreenState extends State<FinancialScreen> {
           Expanded(
             flex: 2,
             child: Card(
-              elevation: 2,
+              elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(14),
+                side: const BorderSide(
+                  color: Color(0x1a000000),
+                  width: 1,
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Serviços e Preços',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const [
-                          DataColumn(label: Text('Serviço')),
-                          DataColumn(label: Text('Pequeno')),
-                          DataColumn(label: Text('Médio')),
-                          DataColumn(label: Text('Grande')),
-                          DataColumn(label: Text('Ação')),
-                        ],
-                        rows: services
-                            .map(
-                              (service) => DataRow(
-                                cells: [
-                                  DataCell(Text(service.name)),
-                                  DataCell(
-                                    Text('R\$ ${service.smallPrice.toStringAsFixed(2)}'),
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Serviços e Preços',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xFF0A0A0A),
+                          ),
+                        ),
+                        const SizedBox(height: 22),
+                        Row(
+                          children: [
+                            Text(
+                              'Tamanho pet:',
+                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xFF0A0A0A),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Container(
+                              width: 180,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF3F3F5),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                underline: const SizedBox(),
+                                value: selectedSize,
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: 'small',
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 12),
+                                      child: Text('Pequeno'),
+                                    ),
                                   ),
-                                  DataCell(
-                                    Text('R\$ ${service.mediumPrice.toStringAsFixed(2)}'),
+                                  DropdownMenuItem(
+                                    value: 'medium',
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 12),
+                                      child: Text('Médio'),
+                                    ),
                                   ),
-                                  DataCell(
-                                    Text('R\$ ${service.largePrice.toStringAsFixed(2)}'),
-                                  ),
-                                  DataCell(
-                                    ElevatedButton(
-                                      onPressed: () => _addServiceToTotal(service),
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 8,
-                                        ),
-                                      ),
-                                      child: const Text('Adicionar'),
+                                  DropdownMenuItem(
+                                    value: 'large',
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 12),
+                                      child: Text('Grande'),
                                     ),
                                   ),
                                 ],
+                                onChanged: (value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      selectedSize = value;
+                                    });
+                                  }
+                                },
                               ),
-                            )
-                            .toList(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0x1a000000),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columnSpacing: 40,
+                          columns: [
+                            DataColumn(
+                              label: Text(
+                                'Serviço',
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF0A0A0A),
+                                ),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Pequeno',
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF0A0A0A),
+                                ),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Médio',
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF0A0A0A),
+                                ),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Grande',
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF0A0A0A),
+                                ),
+                              ),
+                            ),
+                            const DataColumn(label: SizedBox(width: 74)),
+                          ],
+                          rows: services
+                              .map(
+                                (service) => DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Text(
+                                        service.name,
+                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: const Color(0xFF0A0A0A),
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        'R\$${service.smallPrice.toStringAsFixed(0)}',
+                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: const Color(0xFF0A0A0A),
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        'R\$${service.mediumPrice.toStringAsFixed(0)}',
+                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: const Color(0xFF0A0A0A),
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        'R\$${service.largePrice.toStringAsFixed(0)}',
+                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: const Color(0xFF0A0A0A),
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      OutlinedButton.icon(
+                                        onPressed: () => _addServiceToTotal(service),
+                                        icon: const Icon(Icons.add, size: 16),
+                                        label: const Text('Add'),
+                                        style: OutlinedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 11,
+                                            vertical: 5,
+                                          ),
+                                          side: const BorderSide(
+                                            color: Color(0x1a000000),
+                                            width: 1,
+                                          ),
+                                          backgroundColor: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
             ),
           ),
@@ -120,121 +266,119 @@ class _FinancialScreenState extends State<FinancialScreen> {
           Expanded(
             flex: 1,
             child: Card(
-              elevation: 2,
+              elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(14),
+                side: const BorderSide(
+                  color: Color(0x1a000000),
+                  width: 1,
+                ),
               ),
+              color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Total de Serviços',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                      'Serviço total',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFF0A0A0A),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    // Size selector
-                    Text(
-                      'Tamanho do Pet',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    SegmentedButton<String>(
-                      segments: const [
-                        ButtonSegment(label: Text('P'), value: 'small'),
-                        ButtonSegment(label: Text('M'), value: 'medium'),
-                        ButtonSegment(label: Text('G'), value: 'large'),
-                      ],
-                      selected: {selectedSize},
-                      onSelectionChanged: (Set<String> newSelection) {
-                        setState(() {
-                          selectedSize = newSelection.first;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 24),
-                    // Selected services list
-                    Text(
-                      'Serviços Selecionados',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 48),
                     if (selectedServices.isEmpty)
-                      Text(
-                        'Nenhum serviço adicionado',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey.shade600,
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Nenhum serviço adicionado',
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: const Color(0xFF6A7282),
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Clique em "add" em qualquer serviço para incluir no total',
+                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                color: const Color(0xFF6A7282),
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
                       )
                     else
                       Column(
-                        children: selectedServices
-                            .map(
-                              (selectedService) => Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            selectedService.service.name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ...selectedServices.map(
+                            (selectedService) => Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          selectedService.service.name,
+                                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                            color: const Color(0xFF0A0A0A),
+                                            fontWeight: FontWeight.w400,
                                           ),
-                                          Text(
-                                            'R\$ ${selectedService.price.toStringAsFixed(2)}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall,
+                                        ),
+                                        Text(
+                                          'R\$ ${selectedService.price.toStringAsFixed(2)}',
+                                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                            color: const Color(0xFF6A7282),
+                                            fontWeight: FontWeight.w400,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    IconButton(
-                                      icon: const Icon(Icons.close),
-                                      onPressed: () =>
-                                          _removeServiceFromTotal(
-                                            selectedService.id,
-                                          ),
-                                      iconSize: 18,
-                                      constraints: const BoxConstraints(),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.close, size: 18),
+                                    onPressed: () =>
+                                        _removeServiceFromTotal(selectedService.id),
+                                    constraints: const BoxConstraints(),
+                                    padding: EdgeInsets.zero,
+                                    color: const Color(0xFF0A0A0A),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          const Divider(),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Total',
+                                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF0A0A0A),
                                 ),
                               ),
-                            )
-                            .toList(),
-                      ),
-                    const SizedBox(height: 16),
-                    const Divider(),
-                    const SizedBox(height: 8),
-                    // Total price
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Total',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        Text(
-                          'R\$ ${_getTotalPrice().toStringAsFixed(2)}',
-                          style:
-                              Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue.shade600,
+                              Text(
+                                'R\$ ${_getTotalPrice().toStringAsFixed(2)}',
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF0A0A0A),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                   ],
                 ),
               ),
