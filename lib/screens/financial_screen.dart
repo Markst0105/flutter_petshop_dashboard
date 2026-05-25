@@ -42,349 +42,413 @@ class _FinancialScreenState extends State<FinancialScreen> {
     return selectedServices.fold(0, (sum, item) => sum + item.price);
   }
 
+  String _sizeLabel(String size) {
+    switch (size) {
+      case 'small':
+        return 'Pequeno';
+      case 'large':
+        return 'Grande';
+      default:
+        return 'Médio';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Services table
-          Expanded(
-            flex: 2,
-            child: Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-                side: const BorderSide(
-                  color: Color(0x1a000000),
-                  width: 1,
-                ),
-              ),
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Serviços e Preços',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xFF0A0A0A),
-                          ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Services table card
+        Expanded(
+          flex: 2,
+          child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: const BorderSide(color: Color(0x1A000000)),
+            ),
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Serviços e Preços',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF0A0A0A),
                         ),
-                        const SizedBox(height: 22),
-                        Row(
-                          children: [
-                            Text(
-                              'Tamanho pet:',
-                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xFF0A0A0A),
-                              ),
+                      ),
+                      const SizedBox(height: 22),
+                      Row(
+                        children: [
+                          const Text(
+                            'Tamanho pet:',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF0A0A0A),
                             ),
-                            const SizedBox(width: 12),
-                            Container(
-                              width: 180,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF3F3F5),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Colors.transparent,
-                                ),
-                              ),
+                          ),
+                          const SizedBox(width: 12),
+                          Container(
+                            width: 180,
+                            height: 36,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF3F3F5),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 isExpanded: true,
-                                underline: const SizedBox(),
                                 value: selectedSize,
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF0A0A0A),
+                                ),
                                 items: const [
-                                  DropdownMenuItem(
-                                    value: 'small',
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 12),
-                                      child: Text('Pequeno'),
-                                    ),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 'medium',
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 12),
-                                      child: Text('Médio'),
-                                    ),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 'large',
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 12),
-                                      child: Text('Grande'),
-                                    ),
-                                  ),
+                                  DropdownMenuItem(value: 'small', child: Text('Pequeno')),
+                                  DropdownMenuItem(value: 'medium', child: Text('Médio')),
+                                  DropdownMenuItem(value: 'large', child: Text('Grande')),
                                 ],
                                 onChanged: (value) {
-                                  if (value != null) {
-                                    setState(() {
-                                      selectedSize = value;
-                                    });
-                                  }
+                                  if (value != null) setState(() => selectedSize = value);
                                 },
                               ),
                             ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0x1A000000)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      children: [
+                        // Header row
+                        Container(
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(color: Color(0x1A000000)),
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                          child: Row(
+                            children: [
+                              const Expanded(
+                                flex: 5,
+                                child: Text(
+                                  'Serviço',
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF0A0A0A),
+                                  ),
+                                ),
+                              ),
+                              _headerCell('Pequeno'),
+                              _headerCell('Médio'),
+                              _headerCell('Grande'),
+                              const SizedBox(width: 90),
+                            ],
+                          ),
                         ),
+                        // Data rows
+                        ...services.asMap().entries.map((entry) {
+                          final isLast = entry.key == services.length - 1;
+                          final service = entry.value;
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: isLast
+                                  ? null
+                                  : const Border(
+                                      bottom: BorderSide(color: Color(0x1A000000)),
+                                    ),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 14),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 5,
+                                  child: Text(
+                                    service.name,
+                                    style: const TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF0A0A0A),
+                                    ),
+                                  ),
+                                ),
+                                _priceCell(service.smallPrice),
+                                _priceCell(service.mediumPrice),
+                                _priceCell(service.largePrice),
+                                SizedBox(
+                                  width: 90,
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: OutlinedButton.icon(
+                                      onPressed: () => _addServiceToTotal(service),
+                                      icon: const Icon(Icons.add, size: 16,
+                                          color: Color(0xFF0A0A0A)),
+                                      label: const Text(
+                                        'Add',
+                                        style: TextStyle(
+                                          fontFamily: 'Inter',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF0A0A0A),
+                                        ),
+                                      ),
+                                      style: OutlinedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 11, vertical: 5),
+                                        side: const BorderSide(
+                                            color: Color(0x1A000000)),
+                                        backgroundColor: Colors.white,
+                                        minimumSize: const Size(74, 32),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color(0x1a000000),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 24),
+        // Total panel card
+        Expanded(
+          flex: 1,
+          child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: const BorderSide(color: Color(0x1A000000)),
+            ),
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Serviço total',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF0A0A0A),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  if (selectedServices.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Column(
+                        children: const [
+                          Text(
+                            'Nenhum serviço adicionado',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF6A7282),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Clique em "add" em qualquer serviço para incluir no total',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF6A7282),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columnSpacing: 40,
-                          columns: [
-                            DataColumn(
-                              label: Text(
-                                'Serviço',
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF0A0A0A),
-                                ),
+                    )
+                  else
+                    Column(
+                      children: selectedServices.map((s) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFFEFF6FF), Color(0xFFF0FDF4)],
                               ),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: const Color(0xFFBEDBFF)),
                             ),
-                            DataColumn(
-                              label: Text(
-                                'Pequeno',
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF0A0A0A),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        s.service.name,
+                                        style: const TextStyle(
+                                          fontFamily: 'Inter',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xFF0A0A0A),
+                                        ),
+                                      ),
+                                      Text(
+                                        _sizeLabel(s.size),
+                                        style: const TextStyle(
+                                          fontFamily: 'Inter',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xFF4A5565),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                                Text(
+                                  'R\$${s.price.toStringAsFixed(0)}',
+                                  style: const TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF0A0A0A),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                GestureDetector(
+                                  onTap: () => _removeServiceFromTotal(s.id),
+                                  child: const Icon(
+                                    Icons.delete_outline,
+                                    size: 16,
+                                    color: Color(0xFFFB2C36),
+                                  ),
+                                ),
+                              ],
                             ),
-                            DataColumn(
-                              label: Text(
-                                'Médio',
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF0A0A0A),
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Grande',
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF0A0A0A),
-                                ),
-                              ),
-                            ),
-                            const DataColumn(label: SizedBox(width: 74)),
-                          ],
-                          rows: services
-                              .map(
-                                (service) => DataRow(
-                                  cells: [
-                                    DataCell(
-                                      Text(
-                                        service.name,
-                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xFF0A0A0A),
-                                        ),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        'R\$${service.smallPrice.toStringAsFixed(0)}',
-                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xFF0A0A0A),
-                                        ),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        'R\$${service.mediumPrice.toStringAsFixed(0)}',
-                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xFF0A0A0A),
-                                        ),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        'R\$${service.largePrice.toStringAsFixed(0)}',
-                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xFF0A0A0A),
-                                        ),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      OutlinedButton.icon(
-                                        onPressed: () => _addServiceToTotal(service),
-                                        icon: const Icon(Icons.add, size: 16),
-                                        label: const Text('Add'),
-                                        style: OutlinedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 11,
-                                            vertical: 5,
-                                          ),
-                                          side: const BorderSide(
-                                            color: Color(0x1a000000),
-                                            width: 1,
-                                          ),
-                                          backgroundColor: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  const SizedBox(height: 4),
+                  const Divider(color: Color(0x1A000000), thickness: 1),
+                  const SizedBox(height: 17),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Total:',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF0A0A0A),
+                        ),
+                      ),
+                      Text(
+                        'R\$${_getTotalPrice().toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF0A0A0A),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () => setState(() => selectedServices.clear()),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        side: const BorderSide(color: Color(0x1A000000)),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Limpar tudo',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF0A0A0A),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
                 ],
               ),
             ),
           ),
-          const SizedBox(width: 24),
-          // Total section
-          Expanded(
-            flex: 1,
-            child: Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-                side: const BorderSide(
-                  color: Color(0x1a000000),
-                  width: 1,
-                ),
-              ),
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Serviço total',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xFF0A0A0A),
-                      ),
-                    ),
-                    const SizedBox(height: 48),
-                    if (selectedServices.isEmpty)
-                      Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              'Nenhum serviço adicionado',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: const Color(0xFF6A7282),
-                                fontWeight: FontWeight.w400,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Clique em "add" em qualquer serviço para incluir no total',
-                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: const Color(0xFF6A7282),
-                                fontWeight: FontWeight.w400,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      )
-                    else
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ...selectedServices.map(
-                            (selectedService) => Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          selectedService.service.name,
-                                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                            color: const Color(0xFF0A0A0A),
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        Text(
-                                          'R\$ ${selectedService.price.toStringAsFixed(2)}',
-                                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                            color: const Color(0xFF6A7282),
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.close, size: 18),
-                                    onPressed: () =>
-                                        _removeServiceFromTotal(selectedService.id),
-                                    constraints: const BoxConstraints(),
-                                    padding: EdgeInsets.zero,
-                                    color: const Color(0xFF0A0A0A),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          const Divider(),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Total',
-                                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF0A0A0A),
-                                ),
-                              ),
-                              Text(
-                                'R\$ ${_getTotalPrice().toStringAsFixed(2)}',
-                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: const Color(0xFF0A0A0A),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
+      ],
+    );
+  }
+
+  Widget _headerCell(String label) {
+    return Expanded(
+      flex: 2,
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: Color(0xFF0A0A0A),
+        ),
+      ),
+    );
+  }
+
+  Widget _priceCell(double price) {
+    return Expanded(
+      flex: 2,
+      child: Text(
+        'R\$${price.toStringAsFixed(0)}',
+        style: const TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: Color(0xFF0A0A0A),
+        ),
       ),
     );
   }
