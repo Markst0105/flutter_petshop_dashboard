@@ -28,7 +28,7 @@ class DayBooking {
 
 // Mock data for day bookings
 final dayBookings = {
-  '2025-10-29': [
+  '2026-05-29': [
     DayBooking(
       id: '1',
       time: '09:00 AM',
@@ -74,7 +74,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-10-30': [
+  '2026-05-30': [
     DayBooking(
       id: '5',
       time: '09:00 AM',
@@ -98,7 +98,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-10-31': [
+  '2026-05-31': [
     DayBooking(
       id: '16',
       time: '10:00 AM',
@@ -111,7 +111,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-11-01': [
+  '2026-06-01': [
     DayBooking(
       id: '7',
       time: '10:00 AM',
@@ -146,7 +146,7 @@ final dayBookings = {
       petSize: 'Grande',
     ),
   ],
-  '2025-11-03': [
+  '2026-06-03': [
     DayBooking(
       id: '17',
       time: '09:00 AM',
@@ -181,7 +181,7 @@ final dayBookings = {
       petSize: 'Grande',
     ),
   ],
-  '2025-11-04': [
+  '2026-06-04': [
     DayBooking(
       id: '10',
       time: '11:00 AM',
@@ -194,7 +194,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-11-05': [
+  '2026-06-05': [
     DayBooking(
       id: '5',
       time: '09:00 AM',
@@ -251,7 +251,7 @@ final dayBookings = {
       petSize: 'Médio',
     ),
   ],
-  '2025-11-06': [
+  '2026-06-06': [
     DayBooking(
       id: '11',
       time: '09:00 AM',
@@ -264,7 +264,7 @@ final dayBookings = {
       petSize: 'Grande',
     ),
   ],
-  '2025-11-07': [
+  '2026-06-07': [
     DayBooking(
       id: '12',
       time: '10:00 AM',
@@ -288,7 +288,7 @@ final dayBookings = {
       petSize: 'Médio',
     ),
   ],
-  '2025-11-08': [
+  '2026-06-08': [
     DayBooking(
       id: '20',
       time: '09:30 AM',
@@ -334,7 +334,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-11-10': [
+  '2026-06-10': [
     DayBooking(
       id: '14',
       time: '09:00 AM',
@@ -369,7 +369,7 @@ final dayBookings = {
       petSize: 'Médio',
     ),
   ],
-  '2025-11-12': [
+  '2026-06-12': [
     DayBooking(
       id: '24',
       time: '09:00 AM',
@@ -415,7 +415,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-11-14': [
+  '2026-06-14': [
     DayBooking(
       id: '24',
       time: '10:00 AM',
@@ -450,7 +450,7 @@ final dayBookings = {
       petSize: 'Grande',
     ),
   ],
-  '2025-11-18': [
+  '2026-06-18': [
     DayBooking(
       id: '27',
       time: '09:00 AM',
@@ -507,7 +507,7 @@ final dayBookings = {
       petSize: 'Médio',
     ),
   ],
-  '2025-11-21': [
+  '2026-06-21': [
     DayBooking(
       id: '32',
       time: '09:00 AM',
@@ -553,7 +553,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-11-24': [
+  '2026-06-24': [
     DayBooking(
       id: '36',
       time: '09:00 AM',
@@ -621,7 +621,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-11-25': [
+  '2026-06-25': [
     DayBooking(
       id: '10',
       time: '09:00 AM',
@@ -689,7 +689,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-11-26': [
+  '2026-06-26': [
     DayBooking(
       id: '42',
       time: '09:00 AM',
@@ -724,7 +724,7 @@ final dayBookings = {
       petSize: 'Grande',
     ),
   ],
-  '2025-11-27': [
+  '2026-06-27': [
     DayBooking(
       id: '45',
       time: '10:00 AM',
@@ -748,7 +748,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-11-28': [
+  '2026-06-28': [
     DayBooking(
       id: '47',
       time: '09:00 AM',
@@ -772,7 +772,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-11-29': [
+  '2026-06-29': [
     DayBooking(
       id: '49',
       time: '10:00 AM',
@@ -785,7 +785,7 @@ final dayBookings = {
       petSize: 'Médio',
     ),
   ],
-  '2025-12-02': [
+  '2026-07-02': [
     DayBooking(
       id: '36',
       time: '10:00 AM',
@@ -831,7 +831,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-12-05': [
+  '2026-07-05': [
     DayBooking(
       id: '50',
       time: '09:00 AM',
@@ -866,7 +866,7 @@ final dayBookings = {
       petSize: 'Grande',
     ),
   ],
-  '2025-12-09': [
+  '2026-07-09': [
     DayBooking(
       id: '40',
       time: '09:00 AM',
@@ -923,7 +923,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-12-10': [
+  '2026-07-10': [
     DayBooking(
       id: '53',
       time: '09:00 AM',
@@ -980,7 +980,7 @@ final dayBookings = {
       petSize: 'Médio',
     ),
   ],
-  '2025-12-18': [
+  '2026-07-18': [
     DayBooking(
       id: '45',
       time: '09:00 AM',
@@ -1037,7 +1037,7 @@ final dayBookings = {
       petSize: 'Médio',
     ),
   ],
-  '2025-12-20': [
+  '2026-07-20': [
     DayBooking(
       id: '58',
       time: '10:00 AM',
@@ -1105,7 +1105,7 @@ final dayBookings = {
       petSize: 'Pequeno',
     ),
   ],
-  '2025-12-23': [
+  '2026-07-23': [
     DayBooking(
       id: '64',
       time: '09:00 AM',
@@ -1180,8 +1180,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void initState() {
     super.initState();
     final now = DateTime.now();
-    final firstDay = DateTime(2025, 1, 1);
-    final lastDay = DateTime(2025, 12, 31);
+    final firstDay = DateTime(2026, 1, 1);
+    final lastDay = DateTime(2026, 12, 31);
     _focusedDay =
         now.isAfter(firstDay) && now.isBefore(lastDay) ? now : firstDay;
     _selectedDay = _focusedDay;
@@ -1308,8 +1308,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             const SizedBox(height: 16),
             TableCalendar(
-              firstDay: DateTime(2025, 1, 1),
-              lastDay: DateTime(2025, 12, 31),
+              firstDay: DateTime(2026, 1, 1),
+              lastDay: DateTime(2026, 12, 31),
               focusedDay: _focusedDay,
               calendarFormat: CalendarFormat.month,
               headerStyle: const HeaderStyle(
