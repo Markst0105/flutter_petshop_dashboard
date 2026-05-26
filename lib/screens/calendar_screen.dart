@@ -1182,7 +1182,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final now = DateTime.now();
     final firstDay = DateTime(2025, 1, 1);
     final lastDay = DateTime(2025, 12, 31);
-    _focusedDay = now.isAfter(firstDay) && now.isBefore(lastDay) ? now : firstDay;
+    _focusedDay =
+        now.isAfter(firstDay) && now.isBefore(lastDay) ? now : firstDay;
     _selectedDay = _focusedDay;
   }
 
@@ -1201,7 +1202,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   List<DayBooking> _getBookingsForDate(DateTime date) {
-    final dateStr = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+    final dateStr =
+        '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
     return dayBookings[dateStr] ?? [];
   }
 
@@ -1279,24 +1281,26 @@ class _CalendarScreenState extends State<CalendarScreen> {
             Text(
               'Calendário mensal',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
               'Dias são coloridos baseados na desidade de agendamentos: ',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey.shade600,
-              ),
+                    color: Colors.grey.shade600,
+                  ),
             ),
             const SizedBox(height: 8),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _buildDensityLegendItem(Colors.yellow.shade200, 'Baixo (1-2)'),
+                  _buildDensityLegendItem(
+                      Colors.yellow.shade200, 'Baixo (1-2)'),
                   const SizedBox(width: 16),
-                  _buildDensityLegendItem(Colors.orange.shade300, 'Médio (3-4)'),
+                  _buildDensityLegendItem(
+                      Colors.orange.shade300, 'Médio (3-4)'),
                   const SizedBox(width: 16),
                   _buildDensityLegendItem(Colors.red.shade400, 'Alto (5+)'),
                 ],
@@ -1308,6 +1312,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
               lastDay: DateTime(2025, 12, 31),
               focusedDay: _focusedDay,
               calendarFormat: CalendarFormat.month,
+              headerStyle: const HeaderStyle(
+                formatButtonVisible: false,
+              ),
               selectedDayPredicate: (day) {
                 return isSameDay(_selectedDay, day);
               },
@@ -1432,8 +1439,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 Text(
                   'Agendamentos para ${_selectedDay.day} de ${_getMonthName(_selectedDay.month)} de ${_selectedDay.year}',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -1536,8 +1543,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 Text(
                   booking.description,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+                        fontWeight: FontWeight.w500,
+                      ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -1564,8 +1571,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 Text(
                   'Duração: ${booking.duration}',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: Colors.grey.shade700,
-                  ),
+                        color: Colors.grey.shade700,
+                      ),
                 ),
                 if (isExpanded) ...[
                   const SizedBox(height: 12),
@@ -1601,8 +1608,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             Text(
               'Dono',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: Colors.grey.shade600,
-              ),
+                    color: Colors.grey.shade600,
+                  ),
             ),
           ],
         ),
@@ -1615,8 +1622,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
               Text(
                 booking.ownerName,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               const SizedBox(height: 4),
               Row(
@@ -1625,8 +1632,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   Text(
                     booking.ownerPhone,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: Colors.grey.shade600,
-                    ),
+                          color: Colors.grey.shade600,
+                        ),
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
@@ -1673,8 +1680,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             Text(
               'Pet',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: Colors.grey.shade600,
-              ),
+                    color: Colors.grey.shade600,
+                  ),
             ),
           ],
         ),
@@ -1684,8 +1691,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
           child: Text(
             'Tamanho: ${booking.petSize}',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Colors.grey.shade700,
-            ),
+                  color: Colors.grey.shade700,
+                ),
           ),
         ),
       ],
