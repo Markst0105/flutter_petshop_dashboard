@@ -1390,8 +1390,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   );
                 },
               ),
-              calendarStyle: CalendarStyle(
-                cellMargin: const EdgeInsets.all(6),
+              calendarStyle: const CalendarStyle(
+                cellMargin: EdgeInsets.all(6),
                 outsideDaysVisible: true,
               ),
             ),

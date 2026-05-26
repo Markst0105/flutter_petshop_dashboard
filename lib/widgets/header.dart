@@ -30,14 +30,14 @@ class _HeaderState extends State<Header> {
     final dateString = formatter.format(DateTime.now());
 
     return Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
           colors: [Color(0xFFEFF6FF), Color(0xFFF0FDF4)],
         ),
         border: Border(
-          bottom: BorderSide(color: const Color(0xFFDBEAFE), width: 1),
+          bottom: BorderSide(color: Color(0xFFDBEAFE), width: 1),
         ),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             color: Color(0x1A000000),
             blurRadius: 3,

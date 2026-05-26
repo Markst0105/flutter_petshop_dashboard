@@ -463,19 +463,19 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   Widget _buildEmptyState() {
-    return Center(
+    return const Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.access_time_outlined,
               size: 64,
               color: Color(0xFFD1D5DC),
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: 16),
+            Text(
               'Selecione um agendamento',
               style: TextStyle(
                 fontSize: 18,
@@ -483,8 +483,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               'Clique em um agendamento na linha do tempo',
               style: TextStyle(
                 fontSize: 14,
@@ -800,11 +800,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 borderRadius: BorderRadius.circular(8),
                 onTap: () =>
                     _updateBookingStatus(booking, BookingStatus.completed),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 9),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 9),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.check_circle_outline,
                         size: 16,

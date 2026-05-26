@@ -270,10 +270,10 @@ class _FinancialScreenState extends State<FinancialScreen> {
                   ),
                   const SizedBox(height: 16),
                   if (selectedServices.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
                       child: Column(
-                        children: const [
+                        children: [
                           Text(
                             'Nenhum serviço adicionado',
                             style: TextStyle(
