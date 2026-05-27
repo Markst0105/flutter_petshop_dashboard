@@ -1,5 +1,5 @@
 create table users(
-  cpf integer not null primary key,
+  cpf varchar(12) not null primary key,
   name varchar(30) not null,
   dateBirth date not null,
   email varchar(30) not null,
@@ -7,16 +7,16 @@ create table users(
 );
 
 create table petowner(
-  cpf integer not null primary key,
+  cpf varchar(12) not null primary key,
   dateBirth date not null,
   gender varchar(10) not null,
   name varchar(30) not null,
-  cellNumber integer not null
+  cellNumber varchar(15) not null
 );
 
 create table pet(
   petID serial primary key,
-  cpf integer not null,
+  cpf varchar(12) not null,
   type varchar(10) not null,
   race varchar(20),
   size varchar(10) not null,
@@ -40,7 +40,7 @@ create table booking(
 );
 
 create table users_booking(
-  cpf integer not null,
+  cpf varchar(12) not null,
   bookingID integer not null,
   constraint pk_users_booking primary key (cpf, bookingID),
   constraint fk_users_booking foreign key (cpf) references users(cpf),
