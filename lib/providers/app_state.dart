@@ -14,8 +14,7 @@ class AppState extends ChangeNotifier {
   final SupabaseClient supabase = Supabase.instance.client;
 
   AppState() {
-    // Optionally fetch immediately on init, or waiting for explicit load
-    // loadBookings();
+    loadBookings();
   }
 
   Future<void> loadBookings() async {
@@ -70,7 +69,10 @@ class AppState extends ChangeNotifier {
           procedures = servicesObj.map((s) => s['servicename'].toString()).toList();
         }
 
-        DateTime date = DateTime.tryParse(b['datebooking'].toString()) ?? DateTime.now();
+        // Extract the date part only before parsing, preventing timezone shifts
+        String dateStr = b['datebooking'].toString().split('T').first;
+        DateTime parsedDate = DateTime.tryParse(dateStr) ?? DateTime.now();
+        DateTime date = DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
         String time = b['timebooking'].toString();
         // format expected by UI is "14:00"
         String startHourStr = time.length >= 5 ? time.substring(0, 5) : time;
