@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../models/booking.dart';
+import '../providers/app_state.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({Key? key}) : super(key: key);
@@ -10,15 +12,18 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  late List<Booking> bookings;
   Booking? selectedBooking;
 
   static const List<int> _hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
+  List<Booking> get bookings => Provider.of<AppState>(context).bookings;
+
   @override
   void initState() {
     super.initState();
-    bookings = todayBookings;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppState>(context, listen: false).loadBookings();
+    });
   }
 
   Booking? _getBookingForHour(int hour) {
@@ -33,26 +38,24 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   void _updateBookingStatus(Booking booking, BookingStatus newStatus) {
     setState(() {
-      final index = bookings.indexOf(booking);
-      if (index != -1) {
-        final updated = Booking(
-          id: booking.id,
-          startTime: booking.startTime,
-          endTime: booking.endTime,
-          startHour: booking.startHour,
-          duration: booking.duration,
-          ownerName: booking.ownerName,
-          ownerPhone: booking.ownerPhone,
-          petName: booking.petName,
-          petType: booking.petType,
-          petSize: booking.petSize,
-          procedures: booking.procedures,
-          status: newStatus,
-          comments: booking.comments,
-          date: booking.date,
-        );
-        bookings = List.from(bookings)..[index] = updated;
-        selectedBooking = bookings[index];
+      final updated = Booking(
+        id: booking.id,
+        startTime: booking.startTime,
+        endTime: booking.endTime,
+        startHour: booking.startHour,
+        duration: booking.duration,
+        ownerName: booking.ownerName,
+        ownerPhone: booking.ownerPhone,
+        petName: booking.petName,
+        petType: booking.petType,
+        petSize: booking.petSize,
+        procedures: booking.procedures,
+        status: newStatus,
+        comments: booking.comments,
+        date: booking.date,
+      );
+      if (selectedBooking?.id == booking.id) {
+        selectedBooking = updated;
       }
     });
   }
