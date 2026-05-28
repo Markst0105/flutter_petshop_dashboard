@@ -152,16 +152,38 @@ class _HeaderState extends State<Header> {
                     child: Row(
                       children: [
                         Icon(
-                          Icons.wallet,
+                          Icons.attach_money,
                           color: widget.currentScreen == 'financial'
-                              ? Colors.blue.shade600
-                              : Colors.grey,
+                              ? Theme.of(context).primaryColor
+                              : Colors.grey.shade600,
                         ),
                         const SizedBox(width: 12),
                         Text(
                           'Financeiro',
                           style: TextStyle(
                             fontWeight: widget.currentScreen == 'financial'
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'create_booking',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: widget.currentScreen == 'create_booking'
+                              ? Theme.of(context).primaryColor
+                              : Colors.grey.shade600,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Criar Agendamento',
+                          style: TextStyle(
+                            fontWeight: widget.currentScreen == 'create_booking'
                                 ? FontWeight.bold
                                 : FontWeight.normal,
                           ),

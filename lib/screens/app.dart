@@ -5,6 +5,7 @@ import 'login_screen.dart';
 import 'schedule_screen.dart';
 import 'calendar_screen.dart';
 import 'financial_screen.dart';
+import 'create_booking_screen.dart';
 import '../widgets/header.dart';
 
 class App extends StatelessWidget {
@@ -66,6 +67,8 @@ class App extends StatelessWidget {
         return const CalendarScreen();
       case 'financial':
         return const FinancialScreen();
+      case 'create_booking':
+        return const CreateBookingScreen();
       default:
         return const ScheduleScreen();
     }

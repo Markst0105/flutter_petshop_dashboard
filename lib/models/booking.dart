@@ -12,6 +12,7 @@ class Booking {
   final List<String> procedures;
   final BookingStatus status;
   final String comments;
+  final DateTime date;
 
   Booking({
     required this.id,
@@ -27,6 +28,7 @@ class Booking {
     required this.procedures,
     required this.status,
     required this.comments,
+    required this.date,
   });
 }
 
@@ -47,6 +49,7 @@ final todayBookings = [
     procedures: ['Banho', 'Corte de Unhas', 'Tosa'],
     status: BookingStatus.completed,
     comments: 'Pet estava sujo, mas foi limpo com sucesso.',
+    date: DateTime.now(),
   ),
   Booking(
     id: '2',
@@ -62,6 +65,7 @@ final todayBookings = [
     procedures: ['Banho', 'Corte de Unhas'],
     status: BookingStatus.inProgress,
     comments: 'Pet está sendo banhado.',
+    date: DateTime.now(),
   ),
   Booking(
     id: '3',
@@ -77,6 +81,7 @@ final todayBookings = [
     procedures: ['Tosa Completa', 'Limpeza de Dentes'],
     status: BookingStatus.upcoming,
     comments: 'Pet precisa de tosa completa.',
+    date: DateTime.now(),
   ),
   Booking(
     id: '4',
@@ -92,6 +97,7 @@ final todayBookings = [
     procedures: ['Banho', 'Limpeza de Orelhas'],
     status: BookingStatus.upcoming,
     comments: 'Pet precisa de banho e limpeza de orelhas.',
+    date: DateTime.now(),
   ),
   Booking(
     id: '5',
@@ -107,5 +113,6 @@ final todayBookings = [
     procedures: ['Tosa', 'Remoção de Subpelo'],
     status: BookingStatus.upcoming,
     comments: 'Pet está ansioso.',
+    date: DateTime.now(),
   ),
 ];

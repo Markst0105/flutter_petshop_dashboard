@@ -49,6 +49,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           procedures: booking.procedures,
           status: newStatus,
           comments: booking.comments,
+          date: booking.date,
         );
         bookings = List.from(bookings)..[index] = updated;
         selectedBooking = bookings[index];
