@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/booking.dart';
 import '../models/service.dart';
 import '../providers/app_state.dart';
@@ -14,8 +15,10 @@ class CreateBookingScreen extends StatefulWidget {
 
 class _CreateBookingScreenState extends State<CreateBookingScreen> {
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   // Form fields
+  String _ownerCpf = '';
   String _ownerName = '';
   String _ownerPhone = '';
   String _petName = '';
@@ -54,30 +57,113 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
     }
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final newBooking = Booking(
-        id: DateTime.now().toString(),
-        ownerName: _ownerName,
-        ownerPhone: _ownerPhone,
-        petName: _petName,
-        petType: _petSpecies, // Using _petSpecies for petType
-        petSize: 'medium', // Defaulting petSize, can be changed
-        startTime: _selectedTime.format(context),
-        endTime:
-            '${_selectedTime.hour + 1}:${_selectedTime.minute}', // Placeholder for end time
-        startHour: _selectedTime.hour + _selectedTime.minute / 60.0,
-        duration: 1.0, // Defaulting duration to 1 hour
-        procedures: _selectedServices.map((s) => s.name).toList(),
-        status: BookingStatus.upcoming,
-        comments: _observations,
-        date: _selectedDate,
-      );
+      setState(() {
+        _isLoading = true;
+      });
 
-      Provider.of<AppState>(context, listen: false).addBooking(newBooking);
-      Provider.of<AppState>(context, listen: false).navigateToScreen('calendar');
+      try {
+        final supabase = Supabase.instance.client;
+
+        // 1. Insert or get pet owner
+        // Check if pet owner exists
+        final ownerRes = await supabase
+            .from('petowner')
+            .select('cpf')
+            .eq('cpf', _ownerCpf)
+            .maybeSingle();
+
+        if (ownerRes == null) {
+          // Insert new pet owner
+          await supabase.from('petowner').insert({
+            'cpf': _ownerCpf,
+            'name': _ownerName,
+            'cellnumber': _ownerPhone,
+            'datebirth': '1990-01-01', // Default value as it's required in schema
+            'gender': 'Not Spec', // Default value
+          });
+        }
+
+        // 2. Insert pet (We assume a new pet for simplicity, or we can check by name)
+        final petRes = await supabase
+            .from('pet')
+            .insert({
+              'cpf': _ownerCpf,
+              'type': _petSpecies,
+              'race': _petBreed,
+              'size': 'medium', // Default
+              'datebirth': '2020-01-01', // Default
+              'weight': 5.0, // Default  
+              'name': _petName,
+            })
+            .select('petid')
+            .single();
+
+        final petID = petRes['petid'];
+
+        // 3. Insert booking
+        final String startTimeStr = '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}:00';
+        
+        final bookingRes = await supabase
+            .from('booking')
+            .insert({
+              'petid': petID,
+              'datebooking': DateFormat('yyyy-MM-dd').format(_selectedDate),
+              'timebooking': startTimeStr,
+              'duration': 1, // Default duration
+            })
+            .select('bookingid')
+            .single();
+
+        final bookingID = bookingRes['bookingid'];
+
+        // 4. Insert booking services
+        for (var service in _selectedServices) {
+          // Ensure the service exists in `service` table first (optional, maybe we should skip or use dummy)
+          // Based on schema, serviceName is a foreign key. 
+          // So we should just insert dummy services to the `service` table if they don't exist.
+          final serviceExist = await supabase
+              .from('service')
+              .select('servicename')
+              .eq('servicename', service.name)
+              .maybeSingle();
+              
+          if (serviceExist == null) {
+             await supabase.from('service').insert({
+                'servicename': service.name,
+                'sizedestined': 'medium',
+                'duration': 1,
+                'price': 50.0
+             });
+          }
+
+          await supabase.from('booking_service').insert({
+            'bookingid': bookingID,
+            'servicename': service.name,
+          });
+        }
+
+        // Update local state by reloading bookings
+        await Provider.of<AppState>(context, listen: false).loadBookings();
+
+        if (mounted) {
+          Provider.of<AppState>(context, listen: false).navigateToScreen('calendar');
+        }
+      } catch (e) {
+        debugPrint('Error inserting booking: $e');
+        if (mounted) {
+           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Erro ao criar agendamento: $e')));
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
     }
   }
 
@@ -120,6 +206,17 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
             Text('Detalhes do Dono',
                 style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 16),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'CPF do Dono'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor, insira o CPF do dono.';
+                }
+                return null; // Basic validation, can be improved
+              },
+              onSaved: (value) => _ownerCpf = value!,
+            ),
+            const SizedBox(height: 8),
             TextFormField(
               decoration: const InputDecoration(labelText: 'Nome do Dono'),
               validator: (value) {
