@@ -56,6 +56,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       });
     }
   }
+  
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -64,6 +65,10 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       setState(() {
         _isLoading = true;
       });
+
+      // 1. Cache the provider and messenger BEFORE the async operations start
+      final appState = Provider.of<AppState>(context, listen: false);
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
 
       try {
         final supabase = Supabase.instance.client;
@@ -87,83 +92,29 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
           });
         }
 
-        // 2. Insert pet (We assume a new pet for simplicity, or we can check by name)
-        final petRes = await supabase
-            .from('pet')
-            .insert({
-              'cpf': _ownerCpf,
-              'type': _petSpecies,
-              'race': _petBreed,
-              'size': 'medium', // Default
-              'datebirth': '2020-01-01', // Default
-              'weight': 5.0, // Default  
-              'name': _petName,
-            })
-            .select('petid')
-            .single();
+        // ... [Keep all your Supabase insertion logic exactly the same here] ...
 
-        final petID = petRes['petid'];
+        // 2. Use the cached AppState reference safely, no context needed
+        await appState.loadBookings();
 
-        // 3. Insert booking
-        final String startTimeStr = '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}:00';
-        
-        final bookingRes = await supabase
-            .from('booking')
-            .insert({
-              'petid': petID,
-              'datebooking': DateFormat('yyyy-MM-dd').format(_selectedDate),
-              'timebooking': startTimeStr,
-              'duration': 1, // Default duration
-            })
-            .select('bookingid')
-            .single();
-
-        final bookingID = bookingRes['bookingid'];
-
-        // 4. Insert booking services
-        for (var service in _selectedServices) {
-          // Ensure the service exists in `service` table first (optional, maybe we should skip or use dummy)
-          // Based on schema, serviceName is a foreign key. 
-          // So we should just insert dummy services to the `service` table if they don't exist.
-          final serviceExist = await supabase
-              .from('service')
-              .select('servicename')
-              .eq('servicename', service.name)
-              .maybeSingle();
-              
-          if (serviceExist == null) {
-             await supabase.from('service').insert({
-                'servicename': service.name,
-                'sizedestined': 'medium',
-                'duration': 1,
-                'price': 50.0
-             });
-          }
-
-          await supabase.from('booking_service').insert({
-            'bookingid': bookingID,
-            'servicename': service.name,
-          });
-        }
-
-        // Update local state by reloading bookings
-        await Provider.of<AppState>(context, listen: false).loadBookings();
-
+        // 3. We only need to check mounted for things tied directly to the UI view (like navigating)
+        // Note: Depending on how your navigateToScreen is implemented, you might not 
+        // even need the mounted check here if it relies strictly on Provider state.
         if (mounted) {
-          Provider.of<AppState>(context, listen: false).navigateToScreen('calendar');
+          appState.navigateToScreen('calendar');
         }
       } catch (e) {
         debugPrint('Error inserting booking: $e');
-        if (mounted) {
-          final errorMessage = e.toString();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Erro ao criar agendamento: ${errorMessage.split('\n').first}'),
-              duration: const Duration(seconds: 5),
-              backgroundColor: Colors.red.shade700,
-            ),
-          );
-        }
+        
+        // 4. Use the cached messenger safely, no context needed
+        final errorMessage = e.toString();
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Erro ao criar agendamento: ${errorMessage.split('\n').first}'),
+            duration: const Duration(seconds: 5),
+            backgroundColor: Colors.red.shade700,
+          ),
+        );
       } finally {
         if (mounted) {
           setState(() {
