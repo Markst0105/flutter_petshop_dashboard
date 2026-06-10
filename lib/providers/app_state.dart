@@ -20,18 +20,18 @@ class AppState extends ChangeNotifier {
   Future<void> loadBookings() async {
     try {
       // Joins bookings with associated pet owner and services to match our Booking model
-      // Given the sql schema: booking has a foreign key to pet(petID). 
+      // Given the sql schema: booking has a foreign key to pet(petID).
       // And users_booking or booking_service can have links.
       // But for simple listing we will query `booking` and `pet`.
       // Using left join for `pet` and `petOwner`:
       final response = await supabase.from('booking').select('''
-        bookingid, 
-        datebooking, 
-        timebooking, 
+        bookingid,
+        datebooking,
+        timebooking,
         duration,
         pet (
-          name, 
-          type, 
+          name,
+          type,
           size,
           petowner (
             name,
@@ -56,14 +56,14 @@ class AppState extends ChangeNotifier {
           petName = petObj['name'] ?? '';
           petType = petObj['type'] ?? 'Unknown';
           petSize = petObj['size'] ?? 'medium';
-          
+
           var ownerObj = petObj['petowner'];
           if (ownerObj != null) {
             ownerName = ownerObj['name'] ?? '';
             ownerPhone = ownerObj['cellnumber'] ?? '';
           }
         }
-        
+
         var servicesObj = b['booking_service'] as List?;
         if (servicesObj != null) {
           procedures = servicesObj.map((s) => s['servicename'].toString()).toList();
@@ -83,7 +83,7 @@ class AppState extends ChangeNotifier {
         }
 
         double bDuration = (b['duration'] ?? 1).toDouble();
-        
+
         // calculate end time string
         int dHours = bDuration.floor();
         int dMins = ((bDuration - dHours) * 60).round();
@@ -113,6 +113,11 @@ class AppState extends ChangeNotifier {
         );
       }).toList();
 
+      // If no bookings from Supabase, use local bookings for today
+      if (_bookings.isEmpty) {
+        _bookings = todayBookings;
+      }
+
       // Sort bookings by date and time
       _bookings.sort((a, b) {
         final dateComparison = a.date.compareTo(b.date);
@@ -125,6 +130,9 @@ class AppState extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint('Error loading bookings: $e');
+      // Fallback to local bookings on error
+      _bookings = todayBookings;
+      notifyListeners();
     }
   }
 
