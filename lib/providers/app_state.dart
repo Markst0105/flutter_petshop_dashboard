@@ -1,29 +1,43 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/booking.dart';
+import '../utils/web_logger.dart';
 
 class AppState extends ChangeNotifier {
   bool _isLoggedIn = false;
-  String _currentScreen = 'schedule'; // 'schedule', 'calendar', 'financial', 'create_booking'
-  List<Booking> _bookings = []; // Initially empty, populated from Supabase
+  String _currentScreen = 'schedule';
+  List<Booking> _bookings = [];
+  String _loadingStatus = 'Initializing...';
+  String? _lastError;
+  bool _isLoading = false;
 
   bool get isLoggedIn => _isLoggedIn;
   String get currentScreen => _currentScreen;
   List<Booking> get bookings => _bookings;
+  String get loadingStatus => _loadingStatus;
+  String? get lastError => _lastError;
+  bool get isLoading => _isLoading;
 
   final SupabaseClient supabase = Supabase.instance.client;
 
   AppState() {
+    _initializeAsync();
+  }
+
+  Future<void> _initializeAsync() async {
+    WebLogger.info('AppState initializing...');
+    await Future.delayed(const Duration(milliseconds: 500));
+    WebLogger.info('Supabase client ready, loading bookings...');
     loadBookings();
   }
 
-  Future<void> loadBookings() async {
+  Future<void> loadBookings({int retryCount = 0}) async {
+    _isLoading = true;
+    _loadingStatus = 'Loading bookings...';
+    _lastError = null;
+    notifyListeners();
+
     try {
-      // Joins bookings with associated pet owner and services to match our Booking model
-      // Given the sql schema: booking has a foreign key to pet(petID).
-      // And users_booking or booking_service can have links.
-      // But for simple listing we will query `booking` and `pet`.
-      // Using left join for `pet` and `petOwner`:
       final response = await supabase.from('booking').select('''
         bookingid,
         datebooking,
@@ -41,7 +55,9 @@ class AppState extends ChangeNotifier {
         booking_service (
           servicename
         )
-      ''');
+      ''').timeout(const Duration(seconds: 15));
+
+      WebLogger.info('[Supabase] Query successful, received ${(response as List).length} bookings');
 
       _bookings = (response as List).map((b) {
         String ownerName = '';
@@ -69,12 +85,10 @@ class AppState extends ChangeNotifier {
           procedures = servicesObj.map((s) => s['servicename'].toString()).toList();
         }
 
-        // Extract the date part only before parsing, preventing timezone shifts
         String dateStr = b['datebooking'].toString().split('T').first;
         DateTime parsedDate = DateTime.tryParse(dateStr) ?? DateTime.now();
         DateTime date = DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
         String time = b['timebooking'].toString();
-        // format expected by UI is "14:00"
         String startHourStr = time.length >= 5 ? time.substring(0, 5) : time;
         List<String> parts = startHourStr.split(':');
         double startHourD = 9.0;
@@ -84,7 +98,6 @@ class AppState extends ChangeNotifier {
 
         double bDuration = (b['duration'] ?? 1).toDouble();
 
-        // calculate end time string
         int dHours = bDuration.floor();
         int dMins = ((bDuration - dHours) * 60).round();
         int eHours = int.parse(parts[0]) + dHours;
@@ -107,18 +120,17 @@ class AppState extends ChangeNotifier {
           startHour: startHourD,
           duration: bDuration,
           procedures: procedures,
-          status: BookingStatus.upcoming, // database doesn't have status yet
-          comments: '', // database doesn't have comments
+          status: BookingStatus.upcoming,
+          comments: '',
           date: date,
         );
       }).toList();
 
-      // If no bookings from Supabase, use local bookings for today
       if (_bookings.isEmpty) {
+        WebLogger.warn('[Supabase] No bookings found, using fallback mock data');
         _bookings = todayBookings;
       }
 
-      // Sort bookings by date and time
       _bookings.sort((a, b) {
         final dateComparison = a.date.compareTo(b.date);
         if (dateComparison != 0) {
@@ -127,10 +139,43 @@ class AppState extends ChangeNotifier {
         return a.startHour.compareTo(b.startHour);
       });
 
+      _loadingStatus = 'Bookings loaded successfully';
+      _isLoading = false;
       notifyListeners();
+    } on TimeoutException catch (e) {
+      _lastError = 'Connection timeout. Server took too long to respond.';
+      WebLogger.warn('[Supabase] Timeout: $e');
+
+      if (retryCount < 2) {
+        WebLogger.info('[Supabase] Retrying... (attempt ${retryCount + 1}/2)');
+        await Future.delayed(Duration(seconds: 2 * (retryCount + 1)));
+        await loadBookings(retryCount: retryCount + 1);
+      } else {
+        _bookings = todayBookings;
+        _loadingStatus = 'Using offline data (connection timeout)';
+        _isLoading = false;
+        notifyListeners();
+      }
     } catch (e) {
-      debugPrint('Error loading bookings: $e');
-      // Fallback to local bookings on error
+      final errorMessage = e.toString();
+      _lastError = errorMessage;
+      _isLoading = false;
+
+      WebLogger.error('[Supabase] Error loading bookings', e);
+
+      if (errorMessage.contains('Failed host lookup') || errorMessage.contains('No such host')) {
+        _loadingStatus = 'Network Error: Cannot reach Supabase. Check your internet connection or DNS settings.';
+        WebLogger.warn('DNS/Network issue detected');
+      } else if (errorMessage.contains('CORS') || errorMessage.contains('401') || errorMessage.contains('403')) {
+        _loadingStatus = 'Access Error: CORS configuration or authentication issue.';
+        WebLogger.warn('CORS or authentication issue detected');
+      } else if (errorMessage.contains('Connection refused')) {
+        _loadingStatus = 'Connection Error: Unable to connect to Supabase.';
+        WebLogger.warn('Connection refused');
+      } else {
+        _loadingStatus = 'Error: ${errorMessage.split('\n').first}';
+      }
+
       _bookings = todayBookings;
       notifyListeners();
     }

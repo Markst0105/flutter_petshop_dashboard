@@ -7,6 +7,7 @@ import 'calendar_screen.dart';
 import 'financial_screen.dart';
 import 'create_booking_screen.dart';
 import '../widgets/header.dart';
+import '../widgets/data_status_indicator.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -40,6 +41,10 @@ class App extends StatelessWidget {
                       appState.navigateToScreen(screen),
                   onLogoClick: () => appState.handleLogoClick(),
                   onLogout: () => appState.logout(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+                  child: DataStatusIndicator(),
                 ),
                 Expanded(
                   child: appState.currentScreen == 'schedule'
