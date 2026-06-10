@@ -155,7 +155,14 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       } catch (e) {
         debugPrint('Error inserting booking: $e');
         if (mounted) {
-           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Erro ao criar agendamento: $e')));
+          final errorMessage = e.toString();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erro ao criar agendamento: ${errorMessage.split('\n').first}'),
+              duration: const Duration(seconds: 5),
+              backgroundColor: Colors.red.shade700,
+            ),
+          );
         }
       } finally {
         if (mounted) {

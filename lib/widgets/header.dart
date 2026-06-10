@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../utils/supabase_diagnostics.dart';
 
 class Header extends StatefulWidget {
   final bool isLoggedIn;
@@ -92,6 +93,17 @@ class _HeaderState extends State<Header> {
                   ),
                 ),
               ),
+            // Diagnostics button (debug mode)
+            if (widget.isLoggedIn)
+              Tooltip(
+                message: 'Run diagnostics',
+                child: IconButton(
+                  icon: const Icon(Icons.bug_report_outlined, size: 20),
+                  onPressed: () => SupabaseDiagnostics.runDiagnostics(),
+                  splashRadius: 24,
+                ),
+              ),
+
             // Menu button
             if (widget.isLoggedIn)
               PopupMenuButton<String>(
