@@ -32,6 +32,14 @@ migrate_working_dir/
 .pub/
 /coverage/
 /android/build/reports/problems
+/build/web/*
+/build/flutter_assets/*
+/build/native_assets/*
+/build/native_hooks/*
+/build/app.dill
+/build/*.dill
+/build/3283402330b728b9b8bb09cfa1b18c5f/*
+/build/windows/*
 
 # Symbolication related
 
