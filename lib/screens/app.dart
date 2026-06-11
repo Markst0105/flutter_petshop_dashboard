@@ -42,8 +42,8 @@ class App extends StatelessWidget {
                   onLogoClick: () => appState.handleLogoClick(),
                   onLogout: () => appState.logout(),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
                   child: DataStatusIndicator(),
                 ),
                 Expanded(
