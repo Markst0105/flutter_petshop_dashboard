@@ -24,7 +24,8 @@ lib/
 │   ├── login_screen.dart    # Tela de login/ponto de entrada
 │   ├── schedule_screen.dart # Visualização da agenda de hoje
 │   ├── calendar_screen.dart # Visualização do calendário
-│   └── financial_screen.dart # Serviços e preços
+│   ├── financial_screen.dart # Serviços e preços
+|   └── create_booking_screen.dart # Criação de novos agendamentos
 └── widgets/
     ├── header.dart          # Cabeçalho do aplicativo com navegação
     └── booking_card.dart    # Cartão de detalhes da reserva

@@ -40,6 +40,7 @@ migrate_working_dir/
 /build/*.dill
 /build/3283402330b728b9b8bb09cfa1b18c5f/*
 /build/windows/*
+/build/.last_build_id
 
 # Symbolication related
 
