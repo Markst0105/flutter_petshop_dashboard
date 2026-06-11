@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="E:\flutter_petshop_dashboard\flutter_petshop_dashboard\build\windows\x64\CMakeFiles\5195aebc3b5cb5ec23923ab4e666a4ba\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{F9A1C77F-980B-3C7A-B52B-60C5BDA91DDD}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
