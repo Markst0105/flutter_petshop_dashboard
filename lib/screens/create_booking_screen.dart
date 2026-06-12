@@ -92,6 +92,66 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
           });
         }
 
+        // 2. Insert pet (We assume a new pet for simplicity, or we can check by name)
+        final petRes = await supabase
+            .from('pet')
+            .insert({
+              'cpf': _ownerCpf,
+              'type': _petSpecies,
+              'race': _petBreed,
+              'size': 'medium', // Default
+              'datebirth': '2020-01-01', // Default
+              'weight': 5.0, // Default  
+              'name': _petName,
+            })
+            .select('petid')
+            .single();
+
+        final petID = petRes['petid'];
+
+        // 3. Insert booking
+        final String startTimeStr = '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}:00';
+        
+        final bookingRes = await supabase
+            .from('booking')
+            .insert({
+              'petid': petID,
+              'datebooking': DateFormat('yyyy-MM-dd').format(_selectedDate),
+              'timebooking': startTimeStr,
+              'duration': 1, // Default duration
+            })
+            .select('bookingid')
+            .single();
+
+        final bookingID = bookingRes['bookingid'];
+
+        // 4. Insert booking services
+        for (var service in _selectedServices) {
+          // Ensure the service exists in `service` table first (optional, maybe we should skip or use dummy)
+          // Based on schema, serviceName is a foreign key. 
+          // So we should just insert dummy services to the `service` table if they don't exist.
+          final serviceExist = await supabase
+              .from('service')
+              .select('servicename')
+              .eq('servicename', service.name)
+              .maybeSingle();
+              
+          if (serviceExist == null) {
+             await supabase.from('service').insert({
+                'servicename': service.name,
+                'sizedestined': 'medium',
+                'duration': 1,
+                'price': 50.0
+             });
+          }
+
+          await supabase.from('booking_service').insert({
+            'bookingid': bookingID,
+            'servicename': service.name,
+          });
+        }
+
+
         // ... [Keep all your Supabase insertion logic exactly the same here] ...
 
         // 2. Use the cached AppState reference safely, no context needed
