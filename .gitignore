@@ -61,4 +61,6 @@ app.*.map.json
 *macos/
 *ios/
 
+/build/*test_cache/
+/build/*unit_test_assets/
 
