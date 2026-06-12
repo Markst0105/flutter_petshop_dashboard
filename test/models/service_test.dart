@@ -2,57 +2,107 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:petshop_dashboard/models/service.dart';
 
 void main() {
-  group('Service Model', () {
-    test('can create service with all fields', () {
+  group('Service Model - Price Calculator', () {
+    test('can create service with prices for each pet size', () {
       final service = Service(
         id: '1',
-        name: 'Grooming',
+        name: 'Banho',
+        smallPrice: 25,
+        mediumPrice: 35,
+        largePrice: 45,
       );
 
       expect(service.id, '1');
-      expect(service.name, 'Grooming');
+      expect(service.name, 'Banho');
+      expect(service.smallPrice, 25);
+      expect(service.mediumPrice, 35);
+      expect(service.largePrice, 45);
     });
 
-    test('service can have different names', () {
-      final groomingService = Service(
+    test('getPrice returns correct price for small pet', () {
+      final service = Service(
         id: '1',
-        name: 'Grooming',
+        name: 'Banho',
+        smallPrice: 25,
+        mediumPrice: 35,
+        largePrice: 45,
       );
 
-      final bathService = Service(
-        id: '2',
-        name: 'Bath',
-      );
-
-      expect(groomingService.name, 'Grooming');
-      expect(bathService.name, 'Bath');
-      expect(groomingService.name, isNot(bathService.name));
+      expect(service.getPrice('small'), 25);
     });
 
-    test('service id is unique', () {
-      final service1 = Service(
+    test('getPrice returns correct price for medium pet', () {
+      final service = Service(
         id: '1',
-        name: 'Grooming',
+        name: 'Banho',
+        smallPrice: 25,
+        mediumPrice: 35,
+        largePrice: 45,
       );
 
-      final service2 = Service(
-        id: '2',
-        name: 'Grooming',
-      );
-
-      expect(service1.id, isNot(service2.id));
+      expect(service.getPrice('medium'), 35);
     });
 
-    test('multiple services can be created', () {
-      final services = [
-        Service(id: '1', name: 'Bath'),
-        Service(id: '2', name: 'Grooming'),
-        Service(id: '3', name: 'Nail Trim'),
-        Service(id: '4', name: 'Teeth Cleaning'),
-      ];
+    test('getPrice returns correct price for large pet', () {
+      final service = Service(
+        id: '1',
+        name: 'Banho',
+        smallPrice: 25,
+        mediumPrice: 35,
+        largePrice: 45,
+      );
 
-      expect(services.length, 4);
-      expect(services.map((s) => s.name), containsAll(['Bath', 'Grooming']));
+      expect(service.getPrice('large'), 45);
+    });
+
+    test('getPrice returns medium price for unknown size', () {
+      final service = Service(
+        id: '1',
+        name: 'Banho',
+        smallPrice: 25,
+        mediumPrice: 35,
+        largePrice: 45,
+      );
+
+      expect(service.getPrice('unknown'), 35);
+    });
+
+    test('different services have different prices', () {
+      final banho = Service(
+        id: '1',
+        name: 'Banho',
+        smallPrice: 25,
+        mediumPrice: 35,
+        largePrice: 45,
+      );
+
+      final tosa = Service(
+        id: '2',
+        name: 'Tosa',
+        smallPrice: 30,
+        mediumPrice: 45,
+        largePrice: 60,
+      );
+
+      expect(banho.getPrice('small'), lessThan(tosa.getPrice('small')));
+      expect(banho.getPrice('large'), lessThan(tosa.getPrice('large')));
+    });
+
+    test('price increases with pet size', () {
+      final service = Service(
+        id: '1',
+        name: 'Banho',
+        smallPrice: 25,
+        mediumPrice: 35,
+        largePrice: 45,
+      );
+
+      final smallPrice = service.getPrice('small');
+      final mediumPrice = service.getPrice('medium');
+      final largePrice = service.getPrice('large');
+
+      expect(smallPrice, lessThan(mediumPrice));
+      expect(mediumPrice, lessThan(largePrice));
     });
   });
 }

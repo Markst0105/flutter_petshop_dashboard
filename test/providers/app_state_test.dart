@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:petshop_dashboard/models/booking.dart';
 import 'package:petshop_dashboard/providers/app_state.dart';
 
