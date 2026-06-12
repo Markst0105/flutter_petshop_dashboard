@@ -1,31 +1,40 @@
 name: Build
-on:  
-  push:    
-    branches:      
-      - main  
-  pull_request:    
-    types: [closed]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 
-jobs:  
-  sonarqube:    
-    name: SonarQube    
-    runs-on: windows-latest    
-    steps:      
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1        
-        with:          
-          fetch-depth: 0  
-      
+jobs:
+  sonarqube:
+    name: SonarQube
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: Install Dependencies and Build        
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run Tests with Coverage
+        run: flutter test --coverage
+
+      - name: Generate Coverage Report
         run: |
-          flutter pub get
-          flutter build web 
-      
-      - name: SonarQube Scan        
-        uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995 # v8.1.0        
-        env:          
+          dart pub global activate coverage
+          dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages
+
+      - name: Build Web
+        run: flutter build web
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995 # v8.1.0
+        env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
