@@ -60,5 +60,5 @@ app.*.map.json
 *linux/
 *macos/
 *ios/
-*test/
+
 
