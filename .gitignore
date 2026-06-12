@@ -32,7 +32,9 @@ migrate_working_dir/
 .pub/
 /coverage/
 /android/build/reports/problems
-/build/web/*
+/build/web/assets/*
+/build/web/canvaskit/*
+/build/web/icons/*
 !build/web/.last_build_id
 /build/flutter_assets/*
 /build/native_assets/*
