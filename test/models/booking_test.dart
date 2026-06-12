@@ -2,6 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:petshop_dashboard/models/booking.dart';
 
 void main() {
+  setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+  });
   group('Booking Model', () {
     test('can create booking with all required fields', () {
       final bookingDate = DateTime(2024, 1, 15);

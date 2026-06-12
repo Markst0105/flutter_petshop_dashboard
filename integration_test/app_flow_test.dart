@@ -5,6 +5,9 @@ import 'package:petshop_dashboard/providers/app_state.dart';
 import 'package:petshop_dashboard/screens/app.dart';
 
 void main() {
+  setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+  });
   group('App Integration Tests', () {
     testWidgets('App starts without crashing', (WidgetTester tester) async {
       final appState = AppState();

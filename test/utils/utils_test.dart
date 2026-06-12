@@ -1,6 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+  });
   group('Utility Functions Tests', () {
     test('time parsing edge cases', () {
       // Test time format validation

@@ -3,6 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:petshop_dashboard/widgets/data_status_indicator.dart';
 
 void main() {
+  setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+  });
   group('Widget Tests', () {
     testWidgets('DataStatusIndicator renders without error', (WidgetTester tester) async {
       await tester.pumpWidget(

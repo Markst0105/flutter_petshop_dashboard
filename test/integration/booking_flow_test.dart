@@ -3,6 +3,9 @@ import 'package:petshop_dashboard/models/booking.dart';
 import 'package:petshop_dashboard/providers/app_state.dart';
 
 void main() {
+  setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+  });
   group('Booking Flow Integration Tests', () {
     test('complete booking workflow from creation to completion', () {
       final appState = AppState();

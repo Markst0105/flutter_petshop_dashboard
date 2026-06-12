@@ -2,6 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:petshop_dashboard/models/service.dart';
 
 void main() {
+  setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+  });
   group('Service Model - Price Calculator', () {
     test('can create service with prices for each pet size', () {
       final service = Service(

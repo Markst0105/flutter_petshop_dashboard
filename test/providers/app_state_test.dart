@@ -6,6 +6,10 @@ void main() {
   group('AppState Provider', () {
     late AppState appState;
 
+    setUpAll(() {
+      TestWidgetsFlutterBinding.ensureInitialized();
+    });
+
     setUp(() {
       appState = AppState();
     });
