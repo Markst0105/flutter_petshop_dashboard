@@ -63,3 +63,4 @@ app.*.map.json
 
 # Temporary python fix scripts
 fix_*.py
+/build/test_cache/build/*
