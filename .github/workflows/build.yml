@@ -37,5 +37,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.coverageReportPaths=coverage/lcov.info
+            -Dsonar.dart.lcov.reportPaths=coverage/lcov.info
             -Dsonar.flutter.tests.reportPath=tests.output
