@@ -29,9 +29,7 @@ jobs:
         run: |
           flutter test --machine --coverage > tests.output
 
-      - name: Fix Coverage Report
-        run: |
-          dart run coverage:format_coverage --lcov --in=coverage/lcov.info --out=coverage/lcov.info --report-on=lib
+
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995 # v8.1.0
