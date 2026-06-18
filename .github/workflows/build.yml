@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Tests with Coverage
         run: |
-          flutter test --coverage
+          flutter test --machine --coverage > tests.output
 
       - name: Fix Coverage Report
         run: |
