@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,13 @@ import 'package:petshop_dashboard/models/booking.dart';
 
 class MockAppState extends Mock implements AppState {}
 
+
+
 void main() {
+  setUpAll(() async {
+    await initializeDateFormatting('pt_BR', null);
+  });
+
   group('ScheduleScreen', () {
     late MockAppState mockAppState;
 
@@ -16,7 +23,8 @@ void main() {
       mockAppState = MockAppState();
       when(() => mockAppState.bookings).thenReturn([]);
       when(() => mockAppState.loadBookings()).thenAnswer((_) async {});
-      when(() => mockAppState.addListenerWhere(any(), any())).thenReturn(() {});
+      when(() => mockAppState.addListener(any())).thenReturn(null);
+      when(() => mockAppState.removeListener(any())).thenReturn(null);
     });
 
     Widget createWidgetUnderTest({List<Booking>? bookings}) {
@@ -31,22 +39,38 @@ void main() {
     }
 
     testWidgets('renders schedule screen with header', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
       await tester.pumpWidget(createWidgetUnderTest());
       
       expect(find.text('Agenda de Hoje'), findsOneWidget);
     });
 
     testWidgets('displays time slots for business hours', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
       when(() => mockAppState.bookings).thenReturn([]);
       
       await tester.pumpWidget(createWidgetUnderTest());
 
-      expect(find.text('8:00'), findsOneWidget);
-      expect(find.text('9:00'), findsOneWidget);
+      expect(find.text('08:00'), findsOneWidget);
+      expect(find.text('09:00'), findsOneWidget);
+      
+      await tester.drag(find.byType(ListView), const Offset(0, -1000));
+      await tester.pumpAndSettle();
+      
       expect(find.text('18:00'), findsOneWidget);
     });
 
     testWidgets('renders bookings in correct time slots', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
       final now = DateTime.now();
       final bookings = [
         Booking(
@@ -76,6 +100,10 @@ void main() {
     });
 
     testWidgets('shows empty state when no bookings', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
       when(() => mockAppState.bookings).thenReturn([]);
 
       await tester.pumpWidget(createWidgetUnderTest());
@@ -84,6 +112,10 @@ void main() {
     });
 
     testWidgets('calls loadBookings on init', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
@@ -91,6 +123,10 @@ void main() {
     });
 
     testWidgets('displays booking details when selected', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
       final now = DateTime.now();
       final bookings = [
         Booking(
@@ -119,6 +155,10 @@ void main() {
     });
 
     testWidgets('displays loading indicator state', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
       when(() => mockAppState.bookings).thenReturn([]);
       when(() => mockAppState.isLoading).thenReturn(true);
 

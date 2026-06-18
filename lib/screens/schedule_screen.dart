@@ -141,11 +141,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Agenda de Hoje',
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Agenda de Hoje',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -159,9 +160,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   fontSize: 14,
                   color: Color(0xFF4A5565),
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
+          ),
+          const SizedBox(width: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
@@ -274,19 +278,25 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  _statusIcon(booking.status),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${booking.startTime} - ${booking.endTime}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF4A5565),
+              Expanded(
+                child: Row(
+                  children: [
+                    _statusIcon(booking.status),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        '${booking.startTime} - ${booking.endTime}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF4A5565),
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               _statusBadge(booking.status),
             ],
           ),
@@ -554,7 +564,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ),
                   Row(
                     children: [
-                      Text(
+                      Expanded(
+                        child: Text(
                         booking.ownerPhone,
                         style: const TextStyle(
                           fontSize: 18,
@@ -562,7 +573,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           color: Color(0xFF0A0A0A),
                         ),
                       ),
-                      const Spacer(),
+                      ),
+                      const SizedBox(width: 8),
                       OutlinedButton.icon(
                         onPressed: () {},
                         icon: const Icon(

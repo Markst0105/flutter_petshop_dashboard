@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 import 'package:petshop_dashboard/widgets/header.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
+  setUpAll(() async {
+    await initializeDateFormatting('pt_BR', null);
+  });
   group('Header Widget', () {
     testWidgets('renders header with logout when logged in', (WidgetTester tester) async {
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -14,14 +19,14 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       expect(find.text('Hoje'), findsOneWidget);
       expect(find.byIcon(Icons.menu), findsOneWidget);
     });
 
     testWidgets('renders header with app title when logged out', (WidgetTester tester) async {
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -30,7 +35,7 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       expect(find.text('AgendaPet'), findsOneWidget);
     });
@@ -38,7 +43,7 @@ void main() {
     testWidgets('calls onLogoClick when logo is tapped', (WidgetTester tester) async {
       bool onLogoClickCalled = false;
 
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -50,7 +55,7 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       final logoFinder = find.byType(GestureDetector).first;
       await tester.tap(logoFinder);
@@ -60,7 +65,7 @@ void main() {
     });
 
     testWidgets('renders logo image', (WidgetTester tester) async {
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -69,13 +74,13 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       expect(find.byType(Image), findsOneWidget);
     });
 
     testWidgets('renders menu button when logged in', (WidgetTester tester) async {
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -84,13 +89,13 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       expect(find.byIcon(Icons.menu), findsOneWidget);
     });
 
     testWidgets('does not render menu button when logged out', (WidgetTester tester) async {
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -99,13 +104,13 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       expect(find.byIcon(Icons.menu), findsNothing);
     });
 
     testWidgets('displays date when logged in', (WidgetTester tester) async {
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -114,7 +119,7 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       expect(find.text('Hoje'), findsOneWidget);
     });
@@ -122,7 +127,7 @@ void main() {
     testWidgets('calls onNavigate when menu item is selected', (WidgetTester tester) async {
       String? navigatedScreen;
 
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -134,7 +139,7 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       final menuButton = find.byIcon(Icons.menu);
       await tester.tap(menuButton);
@@ -144,7 +149,7 @@ void main() {
     testWidgets('calls onLogout when logout option is clicked', (WidgetTester tester) async {
       bool onLogoutCalled = false;
 
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -156,7 +161,7 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       final menuButton = find.byIcon(Icons.menu);
       await tester.tap(menuButton);
@@ -164,7 +169,7 @@ void main() {
     });
 
     testWidgets('respects currentScreen property', (WidgetTester tester) async {
-      await tester.pumpWidget(
+      await mockNetworkImagesFor(() => tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Header(
@@ -173,7 +178,7 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       expect(find.byType(Header), findsOneWidget);
     });

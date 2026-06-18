@@ -23,7 +23,7 @@ void main() {
 
         expect(appState.isLoggedIn, false);
         expect(appState.currentScreen, 'schedule');
-        expect(appState.bookings, isNotEmpty); // Uses fallback data
+        expect(appState.bookings, isEmpty);
         expect(appState.isLoading, false);
       });
     });

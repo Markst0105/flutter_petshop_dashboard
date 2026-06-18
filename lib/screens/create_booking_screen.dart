@@ -196,7 +196,8 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       padding: const EdgeInsets.all(32.0),
       child: Form(
         key: _formKey,
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -348,6 +349,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
               ),
             ),
           ],
+        ),
         ),
       ),
     );

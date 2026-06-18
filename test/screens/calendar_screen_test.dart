@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
@@ -8,14 +9,21 @@ import 'package:petshop_dashboard/models/booking.dart';
 
 class MockAppState extends Mock implements AppState {}
 
+
+
 void main() {
+  setUpAll(() async {
+    await initializeDateFormatting('pt_BR', null);
+  });
+
   group('CalendarScreen', () {
     late MockAppState mockAppState;
 
     setUp(() {
       mockAppState = MockAppState();
       when(() => mockAppState.bookings).thenReturn([]);
-      when(() => mockAppState.addListenerWhere(any(), any())).thenReturn(() {});
+      when(() => mockAppState.addListener(any())).thenReturn(null);
+      when(() => mockAppState.removeListener(any())).thenReturn(null);
     });
 
     Widget createWidgetUnderTest({List<Booking>? bookings}) {

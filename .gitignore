@@ -61,3 +61,5 @@ app.*.map.json
 *macos/
 *ios/
 
+# Temporary python fix scripts
+fix_*.py
