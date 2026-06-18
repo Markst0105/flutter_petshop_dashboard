@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Tests with Coverage
         run: |
-          flutter test --coverage
+          flutter test --machine --coverage > tests.output
 
       - name: Fix Coverage Report
         run: |
@@ -40,3 +40,4 @@ jobs:
         with:
           args: >
             -Dsonar.coverageReportPaths=coverage/lcov.info
+            -Dsonar.flutter.tests.reportPath=tests.output
