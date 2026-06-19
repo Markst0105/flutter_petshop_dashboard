@@ -68,3 +68,4 @@ check_coverage.dart
 *.txt
 /build/web/*
 !/build/web/.last_build_id
+!/build/web/index.html
