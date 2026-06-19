@@ -71,97 +71,61 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       final scaffoldMessenger = ScaffoldMessenger.of(context);
 
       try {
-        final supabase = Supabase.instance.client;
+        final repo = appState.repository;
 
         // 1. Insert or get pet owner
-        // Check if pet owner exists
-        final ownerRes = await supabase
-            .from('petowner')
-            .select('cpf')
-            .eq('cpf', _ownerCpf)
-            .maybeSingle();
-
-        if (ownerRes == null) {
-          // Insert new pet owner
-          await supabase.from('petowner').insert({
-            'cpf': _ownerCpf,
-            'name': _ownerName,
-            'cellnumber': _ownerPhone,
-            'datebirth': '1990-01-01', // Default value as it's required in schema
-            'gender': 'Not Spec', // Default value
-          });
+        final ownerExists = await repo.petOwnerExists(_ownerCpf);
+        if (!ownerExists) {
+          await repo.createPetOwner(
+            cpf: _ownerCpf,
+            name: _ownerName,
+            cellNumber: _ownerPhone,
+          );
         }
 
-        // 2. Insert pet (We assume a new pet for simplicity, or we can check by name)
-        final petRes = await supabase
-            .from('pet')
-            .insert({
-              'cpf': _ownerCpf,
-              'type': _petSpecies,
-              'race': _petBreed,
-              'size': 'medium', // Default
-              'datebirth': '2020-01-01', // Default
-              'weight': 5.0, // Default  
-              'name': _petName,
-            })
-            .select('petid')
-            .single();
-
+        // 2. Insert pet
+        final petRes = await repo.createPet(
+          cpf: _ownerCpf,
+          name: _petName,
+          type: _petSpecies,
+          race: _petBreed,
+        );
         final petID = petRes['petid'];
 
         // 3. Insert booking
         final String startTimeStr = '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}:00';
-        
-        final bookingRes = await supabase
-            .from('booking')
-            .insert({
-              'petid': petID,
-              'datebooking': DateFormat('yyyy-MM-dd').format(_selectedDate),
-              'timebooking': startTimeStr,
-              'duration': 1, // Default duration
-            })
-            .select('bookingid')
-            .single();
-
+        final bookingRes = await repo.createBooking(
+          petId: petID,
+          date: DateFormat('yyyy-MM-dd').format(_selectedDate),
+          time: startTimeStr,
+          duration: 1.0,
+        );
         final bookingID = bookingRes['bookingid'];
 
         // 4. Insert booking services
         for (var service in _selectedServices) {
-          // Ensure the service exists in `service` table first (optional, maybe we should skip or use dummy)
-          // Based on schema, serviceName is a foreign key. 
-          // So we should just insert dummy services to the `service` table if they don't exist.
-          final serviceExist = await supabase
-              .from('service')
-              .select('servicename')
-              .eq('servicename', service.name)
-              .maybeSingle();
-              
-          if (serviceExist == null) {
-             await supabase.from('service').insert({
-                'servicename': service.name,
-                'sizedestined': 'medium',
-                'duration': 1,
-                'price': 50.0
-             });
+          final serviceExist = await repo.serviceExists(service.name);
+          if (!serviceExist) {
+            await repo.createService(
+              serviceName: service.name,
+              sizeDestined: 'medium',
+              duration: 1,
+              price: 50.0,
+            );
           }
-
-          await supabase.from('booking_service').insert({
-            'bookingid': bookingID,
-            'servicename': service.name,
-          });
+          await repo.addBookingService(
+            bookingId: bookingID,
+            serviceName: service.name,
+          );
         }
 
-
-        // ... [Keep all your Supabase insertion logic exactly the same here] ...
-
-        // 2. Use the cached AppState reference safely, no context needed
         await appState.loadBookings();
 
-        // 3. We only need to check mounted for things tied directly to the UI view (like navigating)
-        // Note: Depending on how your navigateToScreen is implemented, you might not 
-        // even need the mounted check here if it relies strictly on Provider state.
         if (mounted) {
-          appState.navigateToScreen('calendar');
+           scaffoldMessenger.showSnackBar(
+             const SnackBar(content: Text('Agendamento criado com sucesso!')),
+           );
+           appState.navigateToScreen('calendar');
         }
       } catch (e) {
         debugPrint('Error inserting booking: $e');

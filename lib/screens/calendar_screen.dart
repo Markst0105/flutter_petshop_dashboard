@@ -69,10 +69,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Colors.red.shade500;
   }
 
-  List<DayBooking> _getBookingsForDate(DateTime date) {
-    // Read from AppState instead of mock
-    final appBindings = Provider.of<AppState>(context, listen: true).bookings;
-    
+  List<DayBooking> _getBookingsForDate(DateTime date, List<Booking> appBindings) {
     // Filter bookings for the exact date
     final dateBookings = appBindings.where((b) => 
         b.date.year == date.year && 
@@ -90,10 +87,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
       String desc = b.procedures.isNotEmpty ? b.procedures.join(', ') : 'Agendamento';
 
-      // Format time safely, convert "09:00" to "09:00 AM" if needed, 
-      // or simply rely on the startTime string for simplicity.
       String formattedTime = b.startTime;
-
 
       return DayBooking(
         id: b.id,
@@ -109,33 +103,34 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }).toList();
   }
 
-  int _getBookingCount(DateTime date) {
-    return _getBookingsForDate(date).length;
+  int _getBookingCount(DateTime date, List<Booking> appBindings) {
+    return _getBookingsForDate(date, appBindings).length;
   }
 
   @override
   Widget build(BuildContext context) {
+    final appBindings = Provider.of<AppState>(context).bookings;
     final isMobile = MediaQuery.of(context).size.width < 768;
-    final bookingsForSelectedDay = _getBookingsForDate(_selectedDay);
+    final bookingsForSelectedDay = _getBookingsForDate(_selectedDay, appBindings);
 
     return Container(
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: isMobile
-            ? _buildMobileLayout(bookingsForSelectedDay)
-            : _buildDesktopLayout(bookingsForSelectedDay),
+            ? _buildMobileLayout(bookingsForSelectedDay, appBindings)
+            : _buildDesktopLayout(bookingsForSelectedDay, appBindings),
       ),
     );
   }
 
-  Widget _buildMobileLayout(List<DayBooking> bookings) {
+  Widget _buildMobileLayout(List<DayBooking> bookings, List<Booking> appBindings) {
     return SingleChildScrollView(
       child: Column(
         children: [
           ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 400),
-            child: _buildCalendarCard(),
+            child: _buildCalendarCard(appBindings),
           ),
           const SizedBox(height: 24),
           SizedBox(
@@ -147,13 +142,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  Widget _buildDesktopLayout(List<DayBooking> bookings) {
+  Widget _buildDesktopLayout(List<DayBooking> bookings, List<Booking> appBindings) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          flex: 2,
-          child: _buildCalendarCard(),
+          flex: 4,
+          child: _buildCalendarCard(appBindings),
         ),
         const SizedBox(width: 30),
         Expanded(
@@ -167,7 +162,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  Widget _buildCalendarCard() {
+  Widget _buildCalendarCard(List<Booking> appBindings) {
     return Card(
       elevation: 2,
       color: Colors.white,
@@ -232,7 +227,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               },
               calendarBuilders: CalendarBuilders(
                 defaultBuilder: (context, day, focusedDay) {
-                  final count = _getBookingCount(day);
+                  final count = _getBookingCount(day, appBindings);
                   return Container(
                     decoration: BoxDecoration(
                       color: _getDensityColor(count),
@@ -249,7 +244,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   );
                 },
                 selectedBuilder: (context, day, focusedDay) {
-                  final count = _getBookingCount(day);
+                  final count = _getBookingCount(day, appBindings);
                   return Container(
                     decoration: BoxDecoration(
                       color: _getDensityColor(count),
@@ -271,7 +266,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   );
                 },
                 todayBuilder: (context, day, focusedDay) {
-                  final count = _getBookingCount(day);
+                  final count = _getBookingCount(day, appBindings);
                   return Container(
                     decoration: BoxDecoration(
                       color: _getDensityColor(count),
@@ -528,8 +523,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
               ),
               const SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 8,
+                runSpacing: 8,
                 children: [
                   Text(
                     booking.ownerPhone,

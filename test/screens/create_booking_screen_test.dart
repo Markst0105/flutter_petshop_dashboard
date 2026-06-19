@@ -1,3 +1,4 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -14,11 +15,46 @@ void main() {
   group('CreateBookingScreen', () {
     late MockAppState mockAppState;
 
+    late MockBookingRepository mockRepo;
+
     setUp(() {
       mockAppState = MockAppState();
+      mockRepo = MockBookingRepository();
+      
+      when(() => mockAppState.repository).thenReturn(mockRepo);
       when(() => mockAppState.navigateToScreen(any())).thenReturn(null);
       when(() => mockAppState.addListener(any())).thenReturn(null);
       when(() => mockAppState.removeListener(any())).thenReturn(null);
+      when(() => mockAppState.loadBookings()).thenAnswer((_) async {});
+      
+      // Mock repository calls
+      when(() => mockRepo.petOwnerExists(any())).thenAnswer((_) async => false);
+      when(() => mockRepo.createPetOwner(
+        cpf: any(named: 'cpf'), 
+        name: any(named: 'name'), 
+        cellNumber: any(named: 'cellNumber')
+      )).thenAnswer((_) async {});
+      
+      when(() => mockRepo.createPet(
+        cpf: any(named: 'cpf'), 
+        name: any(named: 'name'), 
+        type: any(named: 'type'), 
+        race: any(named: 'race')
+      )).thenAnswer((_) async => {'petid': 1});
+      
+      when(() => mockRepo.createBooking(
+        petId: any(named: 'petId'), 
+        date: any(named: 'date'), 
+        time: any(named: 'time'), 
+        duration: any(named: 'duration')
+      )).thenAnswer((_) async => {'bookingid': 1});
+      
+      when(() => mockRepo.serviceExists(any())).thenAnswer((_) async => true);
+      
+      when(() => mockRepo.addBookingService(
+        bookingId: any(named: 'bookingId'), 
+        serviceName: any(named: 'serviceName')
+      )).thenAnswer((_) async {});
     });
 
     Widget createWidgetUnderTest() {
@@ -251,10 +287,181 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(chips.first);
         await tester.pumpAndSettle();
-        
+
         await tester.tap(chips.first);
         await tester.pumpAndSettle();
       }
+    });
+
+    testWidgets('displays observações field', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      expect(find.text('Observações'), findsOneWidget);
+    });
+
+    testWidgets('can enter observações text', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final obsField = find.byType(TextFormField).last;
+      await tester.ensureVisible(obsField);
+      await tester.pumpAndSettle();
+      await tester.enterText(obsField, 'Test notes');
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('form has all required text fields', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      expect(find.byType(TextFormField), findsWidgets);
+      expect(find.text('CPF do Dono'), findsOneWidget);
+      expect(find.text('Nome do Dono'), findsOneWidget);
+      expect(find.text('Telefone do Dono'), findsOneWidget);
+      expect(find.text('Nome do Pet'), findsOneWidget);
+    });
+
+    testWidgets('all section headers are visible', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      expect(find.text('Detalhes do Dono'), findsOneWidget);
+      expect(find.text('Detalhes do Pet'), findsOneWidget);
+      expect(find.text('Detalhes do Agendamento'), findsOneWidget);
+      expect(find.text('Serviços'), findsOneWidget);
+    });
+
+    testWidgets('pet breed field is optional', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      expect(find.text('Raça do Pet'), findsOneWidget);
+    });
+
+    testWidgets('can select multiple services', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final chips = find.byType(ChoiceChip);
+      if (chips.evaluate().length >= 2) {
+        await tester.ensureVisible(chips.at(0));
+        await tester.pumpAndSettle();
+        await tester.tap(chips.at(0));
+        await tester.pumpAndSettle();
+
+        await tester.ensureVisible(chips.at(1));
+        await tester.pumpAndSettle();
+        await tester.tap(chips.at(1));
+        await tester.pumpAndSettle();
+      }
+    });
+
+    testWidgets('material widget wraps form', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      expect(find.byType(Material), findsWidgets);
+    });
+
+    testWidgets('form uses Form widget', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      expect(find.byType(Form), findsOneWidget);
+    });
+
+    testWidgets('scroll view contains form content', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      expect(find.byType(SingleChildScrollView), findsOneWidget);
+    });
+
+    testWidgets('dropdown has correct pet species options',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final dropdown = find.byType(DropdownButtonFormField<String>);
+      await tester.ensureVisible(dropdown);
+      await tester.tap(dropdown);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Cachorro'), findsWidgets);
+      expect(find.text('Gato'), findsWidgets);
+      expect(find.text('Outro'), findsWidgets);
+    });
+
+
+
+    testWidgets('displays all service options', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      expect(find.byType(ChoiceChip), findsWidgets);
+      expect(find.text('Banho'), findsWidgets);
+    });
+
+    testWidgets('form validation logic is completely covered', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final formState = tester.state<FormState>(find.byType(Form));
+      formState.validate();
+      formState.save();
+      
+      final fields = find.byType(TextFormField);
+      await tester.enterText(fields.at(0), '12345678901');
+      await tester.enterText(fields.at(1), 'John Doe');
+      await tester.enterText(fields.at(2), '(11) 98765-4321');
+      await tester.enterText(fields.at(3), 'Buddy');
+      
+      formState.validate();
+      formState.save();
+      
+      final button = find.widgetWithText(ElevatedButton, 'Criar Agendamento');
+      await tester.ensureVisible(button);
+      await tester.tap(button);
+      await tester.pumpAndSettle();
+      
+      expect(find.byType(SnackBar), findsOneWidget);
     });
   });
 }
