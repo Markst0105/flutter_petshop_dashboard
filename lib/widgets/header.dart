@@ -25,6 +25,99 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   bool _showMenu = false;
 
+  Widget _buildLogo() {
+    return GestureDetector(
+      onTap: widget.onLogoClick,
+      child: Image.network(
+        'https://cdn.builder.io/api/v1/image/assets%2Ff1af6bdc9b6340ed933494acecf65fe5%2F35678fcd6a6440e0b559add086501a11?format=webp&width=800&height=1200',
+        width: 48,
+        height: 48,
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+
+  Widget _buildTitle(BuildContext context, String dateString) {
+    if (widget.isLoggedIn) {
+      return Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Hoje',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF1a202c),
+                  ),
+            ),
+            Text(
+              dateString,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.grey.shade600,
+                  ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Expanded(
+        child: Text(
+          'AgendaPet',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+      );
+    }
+  }
+
+  PopupMenuItem<String> _buildMenuItem(
+    BuildContext context,
+    String value,
+    IconData icon,
+    String text, {
+    bool isDestructive = false,
+  }) {
+    final isSelected = widget.currentScreen == value;
+    final color = isDestructive
+        ? Colors.red.shade600
+        : isSelected
+            ? Colors.blue.shade600
+            : Colors.grey.shade600;
+
+    return PopupMenuItem(
+      value: value,
+      child: Row(
+        children: [
+          Icon(icon, color: color),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                color: isDestructive ? Colors.red.shade600 : null,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<PopupMenuEntry<String>> _buildMenuItems(BuildContext context) {
+    return [
+      _buildMenuItem(context, 'schedule', Icons.assignment, 'Agenda'),
+      _buildMenuItem(context, 'calendar', Icons.calendar_today, 'Calendário'),
+      _buildMenuItem(context, 'financial', Icons.attach_money, 'Financeiro'),
+      _buildMenuItem(context, 'create_booking', Icons.add, 'Criar Agendamento'),
+      const PopupMenuDivider(),
+      _buildMenuItem(context, 'logout', Icons.logout, 'Sair', isDestructive: true),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final formatter = DateFormat('EEEE, d \'de\' MMMM', 'pt_BR');
@@ -50,50 +143,9 @@ class _HeaderState extends State<Header> {
       child: SafeArea(
         child: Row(
           children: [
-            // Logo
-            GestureDetector(
-              onTap: widget.onLogoClick,
-              child: Image.network(
-                'https://cdn.builder.io/api/v1/image/assets%2Ff1af6bdc9b6340ed933494acecf65fe5%2F35678fcd6a6440e0b559add086501a11?format=webp&width=800&height=1200',
-                width: 48,
-                height: 48,
-                fit: BoxFit.contain,
-              ),
-            ),
+            _buildLogo(),
             const SizedBox(width: 16),
-            // Title and Date
-            if (widget.isLoggedIn)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Hoje',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1a202c),
-                      ),
-                    ),
-                    Text(
-                      dateString,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            else
-              Expanded(
-                child: Text(
-                  'AgendaPet',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            // Diagnostics button (debug mode)
+            _buildTitle(context, dateString),
             if (widget.isLoggedIn)
               Tooltip(
                 message: 'Run diagnostics',
@@ -103,8 +155,6 @@ class _HeaderState extends State<Header> {
                   splashRadius: 24,
                 ),
               ),
-
-            // Menu button
             if (widget.isLoggedIn)
               PopupMenuButton<String>(
                 onSelected: (value) {
@@ -114,128 +164,7 @@ class _HeaderState extends State<Header> {
                     widget.onNavigate?.call(value);
                   }
                 },
-                itemBuilder: (BuildContext context) => [
-                  PopupMenuItem(
-                    value: 'schedule',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.assignment,
-                          color: widget.currentScreen == 'schedule'
-                              ? Colors.blue.shade600
-                              : Colors.grey,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Agenda',
-                            style: TextStyle(
-                              fontWeight: widget.currentScreen == 'schedule'
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 'calendar',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_today,
-                          color: widget.currentScreen == 'calendar'
-                              ? Colors.blue.shade600
-                              : Colors.grey,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Calendário',
-                            style: TextStyle(
-                              fontWeight: widget.currentScreen == 'calendar'
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 'financial',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.attach_money,
-                          color: widget.currentScreen == 'financial'
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey.shade600,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Financeiro',
-                            style: TextStyle(
-                              fontWeight: widget.currentScreen == 'financial'
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 'create_booking',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: widget.currentScreen == 'create_booking'
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey.shade600,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Criar Agendamento',
-                            style: TextStyle(
-                              fontWeight: widget.currentScreen == 'create_booking'
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuDivider(),
-                  PopupMenuItem(
-                    value: 'logout',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.logout,
-                          color: Colors.red.shade600,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Sair',
-                            style: TextStyle(color: Colors.red.shade600),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                itemBuilder: _buildMenuItems,
                 child: const Icon(Icons.menu),
               ),
           ],
