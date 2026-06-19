@@ -4,6 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'screens/app.dart';
 import 'providers/app_state.dart';
+import 'repositories/booking_repository.dart';
 
 // Placeholder Supabase Credentials
 // Replace these with your actual local or remote Supabase credentials
@@ -13,7 +14,7 @@ const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('pt_BR', null);
-  
+
   try {
     await Supabase.initialize(
       url: supabaseUrl,
@@ -23,9 +24,12 @@ void main() async {
     debugPrint('Supabase init failed. Please check credentials: $e');
   }
 
+  final supabaseClient = Supabase.instance.client;
+  final bookingRepository = BookingRepository(supabaseClient: supabaseClient);
+
   runApp(
     ChangeNotifierProvider(
-      create: (context) => AppState(),
+      create: (context) => AppState(repository: bookingRepository),
       child: const PetshopDashboardApp(),
     ),
   );

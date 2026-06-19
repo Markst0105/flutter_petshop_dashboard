@@ -126,12 +126,15 @@ class _HeaderState extends State<Header> {
                               : Colors.grey,
                         ),
                         const SizedBox(width: 12),
-                        Text(
-                          'Agenda',
-                          style: TextStyle(
-                            fontWeight: widget.currentScreen == 'schedule'
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                        Expanded(
+                          child: Text(
+                            'Agenda',
+                            style: TextStyle(
+                              fontWeight: widget.currentScreen == 'schedule'
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -148,12 +151,15 @@ class _HeaderState extends State<Header> {
                               : Colors.grey,
                         ),
                         const SizedBox(width: 12),
-                        Text(
-                          'Calendário',
-                          style: TextStyle(
-                            fontWeight: widget.currentScreen == 'calendar'
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                        Expanded(
+                          child: Text(
+                            'Calendário',
+                            style: TextStyle(
+                              fontWeight: widget.currentScreen == 'calendar'
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -170,12 +176,15 @@ class _HeaderState extends State<Header> {
                               : Colors.grey.shade600,
                         ),
                         const SizedBox(width: 12),
-                        Text(
-                          'Financeiro',
-                          style: TextStyle(
-                            fontWeight: widget.currentScreen == 'financial'
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                        Expanded(
+                          child: Text(
+                            'Financeiro',
+                            style: TextStyle(
+                              fontWeight: widget.currentScreen == 'financial'
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -192,12 +201,15 @@ class _HeaderState extends State<Header> {
                               : Colors.grey.shade600,
                         ),
                         const SizedBox(width: 12),
-                        Text(
-                          'Criar Agendamento',
-                          style: TextStyle(
-                            fontWeight: widget.currentScreen == 'create_booking'
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                        Expanded(
+                          child: Text(
+                            'Criar Agendamento',
+                            style: TextStyle(
+                              fontWeight: widget.currentScreen == 'create_booking'
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -213,9 +225,12 @@ class _HeaderState extends State<Header> {
                           color: Colors.red.shade600,
                         ),
                         const SizedBox(width: 12),
-                        Text(
-                          'Sair',
-                          style: TextStyle(color: Colors.red.shade600),
+                        Expanded(
+                          child: Text(
+                            'Sair',
+                            style: TextStyle(color: Colors.red.shade600),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
