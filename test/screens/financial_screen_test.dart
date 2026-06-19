@@ -1,18 +1,33 @@
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:petshop_dashboard/screens/financial_screen.dart';
 import 'package:petshop_dashboard/models/service.dart';
 
+void testWidgetsMocked(
+  String description,
+  Future<void> Function(WidgetTester) callback,
+) {
+  testWidgets(description, (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1920, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await initializeDateFormatting('pt_BR', null);
+    await mockNetworkImagesFor(() async {
+      await callback(tester);
+    });
+  });
+}
+
 void main() {
   group('FinancialScreen', () {
-    testWidgets('renders financial screen with services table',
-        (WidgetTester tester) async {
+    testWidgetsMocked('renders financial screen with services table', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.byType(FinancialScreen), findsOneWidget);
@@ -20,13 +35,11 @@ void main() {
       expect(find.text('Serviço total'), findsOneWidget);
     });
 
-    testWidgets('displays service dropdown with sizes', (WidgetTester tester) async {
+    testWidgetsMocked('displays service dropdown with sizes', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('Tamanho pet:'), findsOneWidget);
@@ -35,13 +48,11 @@ void main() {
       expect(find.text('Grande'), findsWidgets);
     });
 
-    testWidgets('displays all services in table', (WidgetTester tester) async {
+    testWidgetsMocked('displays all services in table', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('Banho'), findsOneWidget);
@@ -50,13 +61,11 @@ void main() {
       expect(find.text('Limpeza de Dentes'), findsOneWidget);
     });
 
-    testWidgets('displays prices for services', (WidgetTester tester) async {
+    testWidgetsMocked('displays prices for services', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('R\$25'), findsWidgets);
@@ -64,42 +73,34 @@ void main() {
       expect(find.text('R\$45'), findsWidgets);
     });
 
-    testWidgets('shows empty state when no services selected',
-        (WidgetTester tester) async {
+    testWidgetsMocked('shows empty state when no services selected', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('Nenhum serviço adicionado'), findsOneWidget);
-      expect(find.text('Clique em "add" em qualquer serviço para incluir no total'),
-          findsOneWidget);
+      expect(
+        find.text('Clique em "add" em qualquer serviço para incluir no total'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('add button is visible for each service',
-        (WidgetTester tester) async {
+    testWidgetsMocked('add button is visible for each service', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       final addButtons = find.text('Add');
       expect(addButtons, findsWidgets);
     });
 
-    testWidgets('can change size selection', (WidgetTester tester) async {
+    testWidgetsMocked('can change size selection', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       final dropdown = find.byType(DropdownButton<String>);
@@ -112,51 +113,39 @@ void main() {
       expect(find.byType(DropdownButton<String>), findsOneWidget);
     });
 
-    testWidgets('clears all services button is visible', (WidgetTester tester) async {
+    testWidgetsMocked('clears all services button is visible', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('Limpar tudo'), findsOneWidget);
     });
 
-    testWidgets('shows total price as R\$0.00 initially',
-        (WidgetTester tester) async {
+    testWidgetsMocked('shows total price as R\$0.00 initially', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('R\$0.00'), findsOneWidget);
     });
 
-    testWidgets('displays total label', (WidgetTester tester) async {
+    testWidgetsMocked('displays total label', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('Total:'), findsOneWidget);
     });
 
-    testWidgets('header row displays correct column titles',
-        (WidgetTester tester) async {
+    testWidgetsMocked('header row displays correct column titles', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('Serviço'), findsOneWidget);
@@ -234,40 +223,31 @@ void main() {
   });
 
   group('FinancialScreen State', () {
-    testWidgets('initial state has medium size selected',
-        (WidgetTester tester) async {
+    testWidgetsMocked('initial state has medium size selected', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('Médio'), findsWidgets);
     });
 
-    testWidgets('initial state has empty selected services',
-        (WidgetTester tester) async {
+    testWidgetsMocked('initial state has empty selected services', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.text('Nenhum serviço adicionado'), findsOneWidget);
     });
 
-    testWidgets('initial services list is populated',
-        (WidgetTester tester) async {
+    testWidgetsMocked('initial services list is populated', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.byType(FinancialScreen), findsOneWidget);
@@ -276,13 +256,9 @@ void main() {
   });
 
   group('FinancialScreen Size Label', () {
-    testWidgets('size label for small', (WidgetTester tester) async {
+    testWidgetsMocked('size label for small', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       final dropdown = find.byType(DropdownButton<String>);
@@ -295,13 +271,9 @@ void main() {
       expect(find.byType(FinancialScreen), findsOneWidget);
     });
 
-    testWidgets('size label for large', (WidgetTester tester) async {
+    testWidgetsMocked('size label for large', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       final dropdown = find.byType(DropdownButton<String>);
@@ -316,25 +288,21 @@ void main() {
   });
 
   group('FinancialScreen UI Elements', () {
-    testWidgets('services card has proper styling', (WidgetTester tester) async {
+    testWidgetsMocked('services card has proper styling', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       expect(find.byType(Card), findsWidgets);
     });
 
-    testWidgets('outlined buttons are present', (WidgetTester tester) async {
+    testWidgetsMocked('outlined buttons are present', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: FinancialScreen(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: FinancialScreen())),
       );
 
       final addButtons = find.byType(OutlinedButton);

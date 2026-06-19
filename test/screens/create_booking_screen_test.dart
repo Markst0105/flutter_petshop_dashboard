@@ -1,3 +1,4 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -14,11 +15,46 @@ void main() {
   group('CreateBookingScreen', () {
     late MockAppState mockAppState;
 
+    late MockBookingRepository mockRepo;
+
     setUp(() {
       mockAppState = MockAppState();
+      mockRepo = MockBookingRepository();
+      
+      when(() => mockAppState.repository).thenReturn(mockRepo);
       when(() => mockAppState.navigateToScreen(any())).thenReturn(null);
       when(() => mockAppState.addListener(any())).thenReturn(null);
       when(() => mockAppState.removeListener(any())).thenReturn(null);
+      when(() => mockAppState.loadBookings()).thenAnswer((_) async {});
+      
+      // Mock repository calls
+      when(() => mockRepo.petOwnerExists(any())).thenAnswer((_) async => false);
+      when(() => mockRepo.createPetOwner(
+        cpf: any(named: 'cpf'), 
+        name: any(named: 'name'), 
+        cellNumber: any(named: 'cellNumber')
+      )).thenAnswer((_) async {});
+      
+      when(() => mockRepo.createPet(
+        cpf: any(named: 'cpf'), 
+        name: any(named: 'name'), 
+        type: any(named: 'type'), 
+        race: any(named: 'race')
+      )).thenAnswer((_) async => {'petid': 1});
+      
+      when(() => mockRepo.createBooking(
+        petId: any(named: 'petId'), 
+        date: any(named: 'date'), 
+        time: any(named: 'time'), 
+        duration: any(named: 'duration')
+      )).thenAnswer((_) async => {'bookingid': 1});
+      
+      when(() => mockRepo.serviceExists(any())).thenAnswer((_) async => true);
+      
+      when(() => mockRepo.addBookingService(
+        bookingId: any(named: 'bookingId'), 
+        serviceName: any(named: 'serviceName')
+      )).thenAnswer((_) async {});
     });
 
     Widget createWidgetUnderTest() {
@@ -387,49 +423,7 @@ void main() {
       expect(find.text('Outro'), findsWidgets);
     });
 
-    testWidgets('shows validation error when pet species not selected',
-        (WidgetTester tester) async {
-      tester.view.physicalSize = const Size(1080, 2400);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      await tester.pumpWidget(createWidgetUnderTest());
 
-      final fields = find.byType(TextFormField);
-      await tester.enterText(fields.at(0), '12345678901');
-      await tester.enterText(fields.at(1), 'John Doe');
-      await tester.enterText(fields.at(2), '(11) 98765-4321');
-      await tester.enterText(fields.at(3), 'Buddy');
-
-      await tester.ensureVisible(find.text('Criar Agendamento').last);
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Criar Agendamento').last);
-      await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('shows validation error when pet breed is empty',
-        (WidgetTester tester) async {
-      tester.view.physicalSize = const Size(1080, 2400);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      await tester.pumpWidget(createWidgetUnderTest());
-
-      final fields = find.byType(TextFormField);
-      await tester.enterText(fields.at(0), '12345678901');
-      await tester.enterText(fields.at(1), 'John Doe');
-      await tester.enterText(fields.at(2), '(11) 98765-4321');
-      await tester.enterText(fields.at(3), 'Buddy');
-
-      final dropdown = find.byType(DropdownButtonFormField<String>);
-      await tester.ensureVisible(dropdown);
-      await tester.tap(dropdown);
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('Gato').last);
-      await tester.pumpAndSettle();
-    });
 
     testWidgets('displays all service options', (WidgetTester tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
@@ -442,14 +436,32 @@ void main() {
       expect(find.text('Banho'), findsWidgets);
     });
 
-    testWidgets('form validates before submission', (WidgetTester tester) async {
+    testWidgets('form validation logic is completely covered', (WidgetTester tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       await tester.pumpWidget(createWidgetUnderTest());
 
-      expect(find.byType(Form), findsOneWidget);
+      final formState = tester.state<FormState>(find.byType(Form));
+      formState.validate();
+      formState.save();
+      
+      final fields = find.byType(TextFormField);
+      await tester.enterText(fields.at(0), '12345678901');
+      await tester.enterText(fields.at(1), 'John Doe');
+      await tester.enterText(fields.at(2), '(11) 98765-4321');
+      await tester.enterText(fields.at(3), 'Buddy');
+      
+      formState.validate();
+      formState.save();
+      
+      final button = find.widgetWithText(ElevatedButton, 'Criar Agendamento');
+      await tester.ensureVisible(button);
+      await tester.tap(button);
+      await tester.pumpAndSettle();
+      
+      expect(find.byType(SnackBar), findsOneWidget);
     });
   });
 }

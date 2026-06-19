@@ -1,3 +1,5 @@
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -7,6 +9,22 @@ import 'package:petshop_dashboard/providers/app_state.dart';
 import 'package:petshop_dashboard/widgets/header.dart';
 
 class MockAppState extends Mock implements AppState {}
+
+void testWidgetsMocked(
+  String description,
+  Future<void> Function(WidgetTester) callback,
+) {
+  testWidgets(description, (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1920, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await initializeDateFormatting('pt_BR', null);
+    await mockNetworkImagesFor(() async {
+      await callback(tester);
+    });
+  });
+}
 
 void main() {
   group('LoginScreen', () {
@@ -28,46 +46,55 @@ void main() {
       );
     }
 
-    testWidgets('renders login screen scaffold', (WidgetTester tester) async {
+    testWidgetsMocked('renders login screen scaffold', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(LoginScreen), findsOneWidget);
       expect(find.byType(Scaffold), findsOneWidget);
     });
 
-    testWidgets('displays header with isLoggedIn false', (WidgetTester tester) async {
+    testWidgetsMocked('displays header with isLoggedIn false', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(Header), findsOneWidget);
     });
 
-    testWidgets('displays main description text', (WidgetTester tester) async {
+    testWidgetsMocked('displays main description text', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
-      expect(find.text('Portal de gerenciamento para funcionários'),
-          findsOneWidget);
+      expect(
+        find.text('Portal de gerenciamento para funcionários'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('displays agenda button', (WidgetTester tester) async {
+    testWidgetsMocked('displays agenda button', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.text('Agenda'), findsOneWidget);
     });
 
-    testWidgets('displays calendar button', (WidgetTester tester) async {
+    testWidgetsMocked('displays calendar button', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.text('Calendário'), findsOneWidget);
     });
 
-    testWidgets('displays financial button', (WidgetTester tester) async {
+    testWidgetsMocked('displays financial button', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.text('Financeiro'), findsOneWidget);
     });
 
-    testWidgets('agenda button calls login with schedule',
-        (WidgetTester tester) async {
+    testWidgetsMocked('agenda button calls login with schedule', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       await tester.tap(find.text('Agenda'));
@@ -76,8 +103,9 @@ void main() {
       verify(() => mockAppState.login('schedule')).called(1);
     });
 
-    testWidgets('calendar button calls login with calendar',
-        (WidgetTester tester) async {
+    testWidgetsMocked('calendar button calls login with calendar', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       await tester.tap(find.text('Calendário'));
@@ -86,8 +114,9 @@ void main() {
       verify(() => mockAppState.login('calendar')).called(1);
     });
 
-    testWidgets('financial button calls login with financial',
-        (WidgetTester tester) async {
+    testWidgetsMocked('financial button calls login with financial', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       await tester.tap(find.text('Financeiro'));
@@ -96,77 +125,91 @@ void main() {
       verify(() => mockAppState.login('financial')).called(1);
     });
 
-    testWidgets('has gradient background', (WidgetTester tester) async {
+    testWidgetsMocked('has gradient background', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(Container), findsWidgets);
     });
 
-    testWidgets('displays logo image', (WidgetTester tester) async {
+    testWidgetsMocked('displays logo image', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
-      expect(find.byType(Image), findsOneWidget);
+      expect(find.byType(Image), findsNWidgets(2));
     });
 
-    testWidgets('buttons have proper styling', (WidgetTester tester) async {
+    testWidgetsMocked('buttons have proper styling', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       final gestureDetectors = find.byType(GestureDetector);
       expect(gestureDetectors, findsWidgets);
     });
 
-    testWidgets('agenda button is filled style', (WidgetTester tester) async {
+    testWidgetsMocked('agenda button is filled style', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.text('Agenda'), findsOneWidget);
       expect(find.byType(Container), findsWidgets);
     });
 
-    testWidgets('calendar button is outlined style', (WidgetTester tester) async {
+    testWidgetsMocked('calendar button is outlined style', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.text('Calendário'), findsOneWidget);
       expect(find.byType(Container), findsWidgets);
     });
 
-    testWidgets('financial button is outlined style', (WidgetTester tester) async {
+    testWidgetsMocked('financial button is outlined style', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.text('Financeiro'), findsOneWidget);
       expect(find.byType(Container), findsWidgets);
     });
 
-    testWidgets('buttons are vertically spaced', (WidgetTester tester) async {
+    testWidgetsMocked('buttons are vertically spaced', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(SizedBox), findsWidgets);
     });
 
-    testWidgets('content is centered', (WidgetTester tester) async {
+    testWidgetsMocked('content is centered', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(Center), findsOneWidget);
     });
 
-    testWidgets('content is scrollable', (WidgetTester tester) async {
+    testWidgetsMocked('content is scrollable', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(SingleChildScrollView), findsOneWidget);
     });
 
-    testWidgets('has proper column layout', (WidgetTester tester) async {
+    testWidgetsMocked('has proper column layout', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(Column), findsWidgets);
     });
 
-    testWidgets('has proper row layout for buttons area', (WidgetTester tester) async {
+    testWidgetsMocked('has proper row layout for buttons area', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(Row), findsWidgets);
     });
 
-    testWidgets('agenda button triggers navigation', (WidgetTester tester) async {
+    testWidgetsMocked('agenda button triggers navigation', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       final agendaButton = find.text('Agenda');
@@ -178,7 +221,9 @@ void main() {
       verify(() => mockAppState.login('schedule')).called(1);
     });
 
-    testWidgets('multiple button taps work correctly', (WidgetTester tester) async {
+    testWidgetsMocked('multiple button taps work correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       await tester.tap(find.text('Agenda'));
@@ -194,7 +239,9 @@ void main() {
       verify(() => mockAppState.login('financial')).called(1);
     });
 
-    testWidgets('all buttons are accessible', (WidgetTester tester) async {
+    testWidgetsMocked('all buttons are accessible', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.text('Agenda'), findsOneWidget);
@@ -222,19 +269,21 @@ void main() {
       );
     }
 
-    testWidgets('agenda icon is rendered', (WidgetTester tester) async {
+    testWidgetsMocked('agenda icon is rendered', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(CustomPaint), findsWidgets);
     });
 
-    testWidgets('calendar icon is rendered', (WidgetTester tester) async {
+    testWidgetsMocked('calendar icon is rendered', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(CustomPaint), findsWidgets);
     });
 
-    testWidgets('financial icon is rendered', (WidgetTester tester) async {
+    testWidgetsMocked('financial icon is rendered', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(CustomPaint), findsWidgets);
@@ -260,19 +309,23 @@ void main() {
       );
     }
 
-    testWidgets('renders in portrait orientation', (WidgetTester tester) async {
+    testWidgetsMocked('renders in portrait orientation', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(LoginScreen), findsOneWidget);
     });
 
-    testWidgets('body has container with gradient', (WidgetTester tester) async {
+    testWidgetsMocked('body has container with gradient', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(Container), findsWidgets);
     });
 
-    testWidgets('content respects padding', (WidgetTester tester) async {
+    testWidgetsMocked('content respects padding', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       expect(find.byType(Padding), findsWidgets);
@@ -298,7 +351,7 @@ void main() {
       );
     }
 
-    testWidgets('buttons respond to tap', (WidgetTester tester) async {
+    testWidgetsMocked('buttons respond to tap', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       await tester.tap(find.text('Agenda'));
