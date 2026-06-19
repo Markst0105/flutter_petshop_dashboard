@@ -66,3 +66,5 @@ app.*.map.json
 check_coverage.dart
 *.py
 *.txt
+/build/web/*
+!/build/web/.last_build_id
