@@ -1,5 +1,5 @@
 {
-  "buildCommand": "flutter/bin/flutter build web --web-renderer canvaskit --release ",
+  "buildCommand": "flutter/bin/flutter build web --release",
   "outputDirectory": "build/web",
   "env": {
     "FLUTTER_WEB_CANVASKIT_URL": "https://www.gstatic.com/flutter-canvaskit/",
