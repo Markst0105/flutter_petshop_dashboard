@@ -166,5 +166,97 @@ void main() {
 
       expect(find.byType(ScheduleScreen), findsOneWidget);
     });
+
+    testWidgets('can select and deselect a booking', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final now = DateTime.now();
+      final bookings = [
+        Booking(
+          id: '1',
+          startTime: '09:00',
+          endTime: '10:00',
+          startHour: 9.0,
+          duration: 1.0,
+          ownerName: 'John Doe',
+          ownerPhone: '(11) 98765-4321',
+          petName: 'Max',
+          petType: 'Cachorro',
+          petSize: 'medium',
+          procedures: ['Banho'],
+          status: BookingStatus.upcoming,
+          comments: 'Special comment',
+          date: now,
+        )
+      ];
+
+      when(() => mockAppState.bookings).thenReturn(bookings);
+
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      await tester.tap(find.text('Max').first);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Detalhes & Ações'), findsOneWidget);
+      expect(find.text('Informação do dono'), findsOneWidget);
+      expect(find.text('Ligar'), findsOneWidget);
+      expect(find.text('Special comment'), findsOneWidget);
+
+      await tester.ensureVisible(find.text('Ligar'));
+      await tester.tap(find.text('Ligar'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Max').first);
+      await tester.pumpAndSettle();
+      
+      expect(find.text('Selecione um agendamento'), findsOneWidget);
+    });
+
+    testWidgets('can change booking status', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final now = DateTime.now();
+      final bookings = [
+        Booking(
+          id: '1',
+          startTime: '09:00',
+          endTime: '10:00',
+          startHour: 9.0,
+          duration: 1.0,
+          ownerName: 'John Doe',
+          ownerPhone: '(11) 98765-4321',
+          petName: 'Max',
+          petType: 'Cachorro',
+          petSize: 'medium',
+          procedures: ['Banho'],
+          status: BookingStatus.upcoming,
+          comments: '',
+          date: now,
+        )
+      ];
+
+      when(() => mockAppState.bookings).thenReturn(bookings);
+
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      await tester.tap(find.text('Max').first);
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(find.text('Iniciar'));
+      await tester.tap(find.text('Iniciar'));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(find.text('Cancelar'));
+      await tester.tap(find.text('Cancelar'));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(find.text('Concluir'));
+      await tester.tap(find.text('Concluir'));
+      await tester.pumpAndSettle();
+    });
   });
 }

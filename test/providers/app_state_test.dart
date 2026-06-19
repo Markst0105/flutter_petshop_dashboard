@@ -80,6 +80,27 @@ void main() {
         expect(appState.bookings, isNotEmpty); // Uses fallback data
       });
 
+      test('sets specific error status on Failed host lookup', () async {
+        when(() => mockRepository.getBookings()).thenThrow(Exception('Failed host lookup'));
+        appState = AppState(repository: mockRepository);
+        await Future.delayed(const Duration(milliseconds: 600));
+        expect(appState.loadingStatus, contains('Network Error'));
+      });
+      
+      test('sets access error status on CORS', () async {
+        when(() => mockRepository.getBookings()).thenThrow(Exception('CORS'));
+        appState = AppState(repository: mockRepository);
+        await Future.delayed(const Duration(milliseconds: 600));
+        expect(appState.loadingStatus, contains('Access Error'));
+      });
+
+      test('sets connection error status on Connection refused', () async {
+        when(() => mockRepository.getBookings()).thenThrow(Exception('Connection refused'));
+        appState = AppState(repository: mockRepository);
+        await Future.delayed(const Duration(milliseconds: 600));
+        expect(appState.loadingStatus, contains('Connection Error'));
+      });
+
       test('sorts bookings by date and time', () async {
         final today = DateTime.now();
         final tomorrow = today.add(const Duration(days: 1));

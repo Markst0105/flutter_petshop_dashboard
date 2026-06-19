@@ -198,6 +198,63 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(timeListTile);
       await tester.pumpAndSettle();
+      
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('date picker shows and selects when tapping on date', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final dateListTile = find.byIcon(Icons.calendar_today);
+      await tester.ensureVisible(dateListTile);
+      await tester.pumpAndSettle();
+      await tester.tap(dateListTile);
+      await tester.pumpAndSettle();
+      
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('can change pet species dropdown', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final dropdown = find.byType(DropdownButtonFormField<String>);
+      await tester.ensureVisible(dropdown);
+      await tester.tap(dropdown);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Gato').last);
+      await tester.pumpAndSettle();
+      
+      expect(find.text('Gato'), findsWidgets);
+    });
+
+    testWidgets('selects and deselects service chips multiple times', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final chips = find.byType(ChoiceChip);
+      if (chips.evaluate().isNotEmpty) {
+        await tester.ensureVisible(chips.first);
+        await tester.pumpAndSettle();
+        await tester.tap(chips.first);
+        await tester.pumpAndSettle();
+        
+        await tester.tap(chips.first);
+        await tester.pumpAndSettle();
+      }
     });
   });
 }
