@@ -30,7 +30,7 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/coverage/
+
 /android/build/reports/problems
 /build/web/assets/*
 /build/web/canvaskit/*
@@ -60,5 +60,7 @@ app.*.map.json
 *linux/
 *macos/
 *ios/
-*test/
 
+# Temporary python fix scripts
+fix_*.py
+/build/test_cache/build/*

@@ -1,0 +1,212 @@
+﻿2026-06-18T23:19:27.2009658Z ##[group]Run SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995
+2026-06-18T23:19:27.2010805Z with:
+2026-06-18T23:19:27.2011588Z   args: -Dsonar.coverageReportPaths=coverage/lcov.info -Dsonar.flutter.tests.reportPath=tests.output
+
+2026-06-18T23:19:27.2012548Z   projectBaseDir: .
+2026-06-18T23:19:27.2012962Z   scannerVersion: 8.1.0.6389
+2026-06-18T23:19:27.2013670Z   scannerBinariesUrl: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli
+2026-06-18T23:19:27.2014461Z   skipSignatureVerification: false
+2026-06-18T23:19:27.2014908Z env:
+2026-06-18T23:19:27.2015454Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.44.2-x64/flutter
+2026-06-18T23:19:27.2016221Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2026-06-18T23:19:27.2017101Z   SONAR_TOKEN: ***
+2026-06-18T23:19:27.2017402Z ##[endgroup]
+2026-06-18T23:19:27.3346169Z Installing Sonar Scanner CLI 8.1.0.6389 for windows-x64...
+2026-06-18T23:19:27.3347636Z Downloading from: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-8.1.0.6389-windows-x64.zip
+2026-06-18T23:19:27.9006006Z Downloading signature from: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-8.1.0.6389-windows-x64.zip.asc
+2026-06-18T23:19:28.5891487Z Importing SonarSource public key from hkps://keyserver.ubuntu.com...
+2026-06-18T23:19:28.6993508Z [command]"C:\Program Files\Git\usr\bin\gpg.exe" --homedir /d/a/_temp/gpg-home-1781824768587-10052 --batch --keyserver hkps://keyserver.ubuntu.com --recv-keys 679F1EE92B19609DE816FDE81DB198F93525EC1A
+2026-06-18T23:19:28.7333071Z gpg: keybox '/d/a/_temp/gpg-home-1781824768587-10052/pubring.kbx' created
+2026-06-18T23:19:45.5019868Z gpg: /d/a/_temp/gpg-home-1781824768587-10052/trustdb.gpg: trustdb created
+2026-06-18T23:19:45.5028986Z gpg: key 1DB198F93525EC1A: public key "SonarSource S.A. <infra@sonarsource.com>" imported
+2026-06-18T23:19:45.5815326Z gpg: Total number processed: 1
+2026-06-18T23:19:45.5816149Z gpg:               imported: 1
+2026-06-18T23:19:45.5847785Z Successfully imported key from hkps://keyserver.ubuntu.com
+2026-06-18T23:19:45.5849310Z ✓ SonarSource public key imported successfully
+2026-06-18T23:19:45.5850204Z Verifying GPG signature...
+2026-06-18T23:19:45.6688165Z [command]"C:\Program Files\Git\usr\bin\gpg.exe" --homedir /d/a/_temp/gpg-home-1781824768587-10052 --batch --verify /d/a/_temp/d52b32f0-b5dc-48e5-aaf9-9ad117f2c01d /d/a/_temp/ea5e5daf-71b4-4efe-8bb6-71fd7c4e0ea1
+2026-06-18T23:19:45.8464387Z gpg: Signature made Tue Apr 21 07:20:27 2026 CUT
+2026-06-18T23:19:45.8464995Z gpg:                using RSA key D1436C0DBACEA48702AF97C363F1DD7753B8B315
+2026-06-18T23:19:45.8475998Z gpg: Good signature from "SonarSource S.A. <infra@sonarsource.com>" [unknown]
+2026-06-18T23:19:45.8481419Z gpg: WARNING: This key is not certified with a trusted signature!
+2026-06-18T23:19:45.8482566Z gpg:          There is no indication that the signature belongs to the owner.
+2026-06-18T23:19:45.8483554Z Primary key fingerprint: 679F 1EE9 2B19 609D E816  FDE8 1DB1 98F9 3525 EC1A
+2026-06-18T23:19:45.8484567Z      Subkey fingerprint: D143 6C0D BACE A487 02AF  97C3 63F1 DD77 53B8 B315
+2026-06-18T23:19:45.8510935Z ✓ GPG signature verification passed
+2026-06-18T23:19:45.9372734Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command "$ErrorActionPreference = 'Stop' ; try { Add-Type -AssemblyName System.IO.Compression.ZipFile } catch { } ; try { [System.IO.Compression.ZipFile]::ExtractToDirectory('D:\a\_temp\ea5e5daf-71b4-4efe-8bb6-71fd7c4e0ea1', 'D:\a\_temp\d2ade9b8-7192-4127-9b9b-c44b0b489c7e', $true) } catch { if (($_.Exception.GetType().FullName -eq 'System.Management.Automation.MethodException') -or ($_.Exception.GetType().FullName -eq 'System.Management.Automation.RuntimeException') ){ Expand-Archive -LiteralPath 'D:\a\_temp\ea5e5daf-71b4-4efe-8bb6-71fd7c4e0ea1' -DestinationPath 'D:\a\_temp\d2ade9b8-7192-4127-9b9b-c44b0b489c7e' -Force } else { throw $_ } } ;"
+2026-06-18T23:19:47.5513426Z Sonar Scanner CLI cached to: C:\hostedtoolcache\windows\sonar-scanner-cli\8.1.0.6389\windows-x64
+2026-06-18T23:19:47.6369341Z [command]C:\Windows\system32\cmd.exe /D /S /C "C:\hostedtoolcache\windows\sonar-scanner-cli\8.1.0.6389\windows-x64\bin\sonar-scanner.bat "-Dsonar.projectBaseDir=." "-Dsonar.coverageReportPaths=coverage/lcov.info" "-Dsonar.flutter.tests.reportPath=tests.output""
+2026-06-18T23:19:48.2497079Z 23:19:48.245 INFO  Scanner configuration file: C:\hostedtoolcache\windows\sonar-scanner-cli\8.1.0.6389\windows-x64\bin\..\conf\sonar-scanner.properties
+2026-06-18T23:19:48.2505484Z 23:19:48.249 INFO  Project root configuration file: D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard\sonar-project.properties
+2026-06-18T23:19:48.2696186Z 23:19:48.268 INFO  SonarScanner CLI 8.1.0.6389
+2026-06-18T23:19:48.2844715Z 23:19:48.282 INFO  Windows Server 2025 10.0 amd64
+2026-06-18T23:19:58.2717650Z 23:19:58.271 INFO  Communicating with SonarQube Cloud
+2026-06-18T23:19:58.2724673Z 23:19:58.271 INFO  JRE provisioning: os[windows], arch[amd64]
+2026-06-18T23:20:02.9229029Z 23:20:02.921 INFO  Starting SonarScanner Engine...
+2026-06-18T23:20:02.9236203Z 23:20:02.921 INFO  Java 21.0.9 Eclipse Adoptium (64-bit)
+2026-06-18T23:20:07.5286037Z 23:20:07.527 INFO  Load global settings
+2026-06-18T23:20:08.2707220Z 23:20:08.269 INFO  Load global settings (done) | time=732ms
+2026-06-18T23:20:08.3914382Z 23:20:08.389 INFO  Server id: 1BD809FA-AWHW8ct9-T_TB3XqouNu
+2026-06-18T23:20:09.2088244Z 23:20:09.207 INFO  Loading required plugins
+2026-06-18T23:20:09.2094820Z 23:20:09.208 INFO  Load plugins index
+2026-06-18T23:20:09.3433956Z 23:20:09.341 INFO  Load plugins index (done) | time=133ms
+2026-06-18T23:20:09.3436562Z 23:20:09.343 INFO  Load/download plugins
+2026-06-18T23:20:10.1273196Z 23:20:10.125 INFO  Load/download plugins (done) | time=783ms
+2026-06-18T23:20:10.3963067Z 23:20:10.394 INFO  Loaded core extensions: architecture, sca, a3s
+2026-06-18T23:20:10.8292868Z 23:20:10.827 INFO  Process project properties
+2026-06-18T23:20:10.8531819Z 23:20:10.851 INFO  Project key: Markst0105_flutter_petshop_dashboard
+2026-06-18T23:20:10.8533183Z 23:20:10.851 INFO  Base dir: D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard
+2026-06-18T23:20:10.8535750Z 23:20:10.852 INFO  Working dir: D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard\.scannerwork
+2026-06-18T23:20:10.8655996Z 23:20:10.864 INFO  Load project settings for component key: 'Markst0105_flutter_petshop_dashboard'
+2026-06-18T23:20:11.2243489Z 23:20:11.222 INFO  Load project settings for component key: 'Markst0105_flutter_petshop_dashboard' (done) | time=358ms
+2026-06-18T23:20:11.2419457Z 23:20:11.240 INFO  Found an active CI vendor: 'Github Actions'
+2026-06-18T23:20:12.2525707Z 23:20:12.251 INFO  Check ALM binding of project 'Markst0105_flutter_petshop_dashboard'
+2026-06-18T23:20:12.4743661Z 23:20:12.473 INFO  Detected project binding: BOUND
+2026-06-18T23:20:12.4754719Z 23:20:12.474 INFO  Check ALM binding of project 'Markst0105_flutter_petshop_dashboard' (done) | time=221ms
+2026-06-18T23:20:12.4790427Z 23:20:12.478 INFO  Load branch configuration
+2026-06-18T23:20:12.4801119Z 23:20:12.479 INFO  Github event: push
+2026-06-18T23:20:12.4855879Z 23:20:12.484 INFO  Auto-configuring branch test_coverage
+2026-06-18T23:20:12.4865079Z 23:20:12.485 INFO  Load branch configuration (done) | time=7ms
+2026-06-18T23:20:12.4919951Z 23:20:12.491 INFO  Create analysis
+2026-06-18T23:20:12.8128366Z 23:20:12.811 INFO  Branch name: test_coverage, type: short
+2026-06-18T23:20:12.8129559Z 23:20:12.811 INFO  Create analysis (done) | time=320ms
+2026-06-18T23:20:13.0719225Z 23:20:13.070 INFO  Load quality profiles
+2026-06-18T23:20:13.5119204Z 23:20:13.510 INFO  Load quality profiles (done) | time=439ms
+2026-06-18T23:20:14.4060379Z 23:20:14.405 INFO  Load active rules
+2026-06-18T23:20:15.1159807Z 23:20:15.111 INFO  Load active rules (done) | time=705ms
+2026-06-18T23:20:15.4785340Z 23:20:15.473 INFO  Organization key: testanalysissoftwaremanagement
+2026-06-18T23:20:15.5216310Z 23:20:15.513 INFO  Preprocessing files...
+2026-06-18T23:20:16.2288427Z 23:20:16.225 INFO  9 languages detected in 93 preprocessed files (done) | time=710ms
+2026-06-18T23:20:16.2289579Z 23:20:16.225 INFO  0 files ignored because of inclusion/exclusion patterns
+2026-06-18T23:20:16.2290638Z 23:20:16.227 INFO  25 directories skipped because of exclusion patterns (content not counted)
+2026-06-18T23:20:16.2291628Z 23:20:16.227 INFO  414 files ignored because of scm ignore settings
+2026-06-18T23:20:17.6747093Z 23:20:17.672 INFO  Loading plugins for detected languages
+2026-06-18T23:20:17.6748840Z 23:20:17.672 INFO  Load/download plugins
+2026-06-18T23:20:21.6912103Z 23:20:21.690 INFO  Load/download plugins (done) | time=4016ms
+2026-06-18T23:20:22.6298823Z 23:20:22.623 INFO  Load project repositories
+2026-06-18T23:20:22.9178363Z 23:20:22.917 INFO  Load project repositories (done) | time=294ms
+2026-06-18T23:20:22.9216400Z 23:20:22.920 INFO  SCM collecting changed files in the branch
+2026-06-18T23:20:22.9485135Z 23:20:22.948 INFO  Merge base sha1: 0dc2459422a13b4d559025c02669d7bdae667eda
+2026-06-18T23:20:23.1130649Z 23:20:23.088 INFO  SCM collecting changed files in the branch (done) | time=166ms
+2026-06-18T23:20:23.1850267Z 23:20:23.184 INFO  Indexing files...
+2026-06-18T23:20:23.1864908Z 23:20:23.185 INFO  Project configuration:
+2026-06-18T23:20:23.1941746Z 23:20:23.187 INFO    Excluded sources: **/supabase/**/*, **/linux/**/*, **/test/**/*, **/test_dart/**/*, **/macos/**/*, **ios/**/*, **/build-wrapper-dump.json
+2026-06-18T23:20:23.2757174Z 23:20:23.253 INFO  93 files indexed (done) | time=67ms
+2026-06-18T23:20:23.2976395Z 23:20:23.255 INFO  Quality profile for c: Sonar way
+2026-06-18T23:20:23.3246993Z 23:20:23.255 INFO  Quality profile for cpp: Sonar way
+2026-06-18T23:20:23.3403795Z 23:20:23.257 INFO  Quality profile for dart: Sonar way
+2026-06-18T23:20:23.3449623Z 23:20:23.258 INFO  Quality profile for js: Sonar way
+2026-06-18T23:20:23.3649534Z 23:20:23.258 INFO  Quality profile for json: Sonar way
+2026-06-18T23:20:23.4465519Z 23:20:23.259 INFO  Quality profile for kotlin: Sonar way
+2026-06-18T23:20:23.4505312Z 23:20:23.259 INFO  Quality profile for web: Sonar way
+2026-06-18T23:20:23.4606418Z 23:20:23.259 INFO  Quality profile for xml: Sonar way
+2026-06-18T23:20:23.4799871Z 23:20:23.259 INFO  Quality profile for yaml: Sonar way
+2026-06-18T23:20:23.4898355Z 23:20:23.260 INFO  ------------- Run sensors on module Markst0105_flutter_petshop_dashboard
+2026-06-18T23:20:23.8354707Z 23:20:23.833 INFO  Load metrics repository
+2026-06-18T23:20:23.9967092Z 23:20:23.975 INFO  Load metrics repository (done) | time=142ms
+2026-06-18T23:20:24.0025579Z 23:20:23.993 INFO  Sensor cache enabled
+2026-06-18T23:20:24.0036984Z 23:20:24.000 INFO  Load sensor cache
+2026-06-18T23:20:24.7975127Z 23:20:24.796 INFO  Load sensor cache (31 KB) | time=796ms
+2026-06-18T23:20:27.1214293Z 23:20:27.118 INFO  Reflections took 187 ms to scan 1 urls, producing 30 keys and 295 values
+2026-06-18T23:20:27.5367050Z 23:20:27.536 INFO  Sensor JaCoCo XML Report Importer [jacoco]
+2026-06-18T23:20:27.5436111Z 23:20:27.538 INFO  'sonar.coverage.jacoco.xmlReportPaths' is not defined. Using default locations: target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,build/reports/jacoco/test/jacocoTestReport.xml
+2026-06-18T23:20:27.5438398Z 23:20:27.539 INFO  No report imported, no coverage information will be imported by JaCoCo XML Report Importer
+2026-06-18T23:20:27.5439648Z 23:20:27.540 INFO  Sensor JaCoCo XML Report Importer [jacoco] (done) | time=5ms
+2026-06-18T23:20:27.5441130Z 23:20:27.543 INFO  Sensor Kotlin Sensor [kotlin]
+2026-06-18T23:20:27.5750354Z 23:20:27.573 INFO  1 source file to be analyzed
+2026-06-18T23:20:30.7697899Z 23:20:30.768 INFO  1/1 source file has been analyzed
+2026-06-18T23:20:30.7699091Z 23:20:30.769 INFO  Sensor Kotlin Sensor [kotlin] (done) | time=3226ms
+2026-06-18T23:20:30.7705233Z 23:20:30.770 INFO  Sensor Gradle Sensor [kotlin]
+2026-06-18T23:20:30.7736631Z 23:20:30.773 INFO  3 source files to be analyzed
+2026-06-18T23:20:31.2321506Z 23:20:31.230 INFO  3/3 source files have been analyzed
+2026-06-18T23:20:31.2322794Z 23:20:31.231 INFO  Sensor Gradle Sensor [kotlin] (done) | time=461ms
+2026-06-18T23:20:31.2324397Z 23:20:31.231 INFO  Sensor KotlinSurefireSensor [kotlin]
+2026-06-18T23:20:31.2329907Z 23:20:31.231 INFO  parsing [D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard\target\surefire-reports]
+2026-06-18T23:20:31.2334014Z 23:20:31.232 INFO  Sensor KotlinSurefireSensor [kotlin] (done) | time=0ms
+2026-06-18T23:20:31.2335892Z 23:20:31.232 INFO  Sensor IaC CloudFormation Sensor [iac]
+2026-06-18T23:20:31.2513831Z 23:20:31.248 INFO  There are no files to be analyzed for the CloudFormation language
+2026-06-18T23:20:31.2526396Z 23:20:31.249 INFO  Sensor IaC CloudFormation Sensor [iac] (done) | time=16ms
+2026-06-18T23:20:31.2527406Z 23:20:31.249 INFO  Sensor IaC cfn-lint report Sensor [iac]
+2026-06-18T23:20:31.2528199Z 23:20:31.250 INFO  Sensor IaC cfn-lint report Sensor [iac] (done) | time=2ms
+2026-06-18T23:20:31.2529174Z 23:20:31.251 INFO  Sensor IaC Kustomization Sensor [iac]
+2026-06-18T23:20:31.2548560Z 23:20:31.253 INFO  Sensor IaC Kustomization Sensor [iac] (done) | time=0ms
+2026-06-18T23:20:31.2556759Z 23:20:31.253 INFO  Sensor IaC hadolint report Sensor [iac]
+2026-06-18T23:20:31.2560124Z 23:20:31.254 INFO  Sensor IaC hadolint report Sensor [iac] (done) | time=1ms
+2026-06-18T23:20:31.2562349Z 23:20:31.254 INFO  Sensor IaC Azure Resource Manager Sensor [iac]
+2026-06-18T23:20:31.2612619Z 23:20:31.257 INFO  There are no files to be analyzed for the Azure Resource Manager language
+2026-06-18T23:20:31.2614308Z 23:20:31.259 INFO  Sensor IaC Azure Resource Manager Sensor [iac] (done) | time=4ms
+2026-06-18T23:20:31.2616672Z 23:20:31.260 INFO  Sensor Java Config Sensor [iac]
+2026-06-18T23:20:31.2666224Z 23:20:31.265 INFO  There are no files to be analyzed for the Java language
+2026-06-18T23:20:31.2669399Z 23:20:31.265 INFO  Sensor Java Config Sensor [iac] (done) | time=4ms
+2026-06-18T23:20:31.2671888Z 23:20:31.265 INFO  Sensor IaC Docker Sensor [iac]
+2026-06-18T23:20:31.2723859Z 23:20:31.271 INFO  There are no files to be analyzed for the Docker language
+2026-06-18T23:20:31.2732026Z 23:20:31.271 INFO  Sensor IaC Docker Sensor [iac] (done) | time=6ms
+2026-06-18T23:20:31.2733049Z 23:20:31.271 INFO  Sensor IaC Ansible Sensor [iac]
+2026-06-18T23:20:31.3017929Z 23:20:31.297 INFO  There are no files to be analyzed for the Ansible language
+2026-06-18T23:20:31.3024419Z 23:20:31.298 INFO  Sensor IaC Ansible Sensor [iac] (done) | time=25ms
+2026-06-18T23:20:31.3025311Z 23:20:31.298 INFO  Sensor IaC ansible-lint report Sensor [iac]
+2026-06-18T23:20:31.3026160Z 23:20:31.299 INFO  Sensor IaC ansible-lint report Sensor [iac] (done) | time=1ms
+2026-06-18T23:20:31.3026982Z 23:20:31.299 INFO  Sensor IaC spectral report Sensor [iac]
+2026-06-18T23:20:31.3027763Z 23:20:31.300 INFO  Sensor IaC spectral report Sensor [iac] (done) | time=0ms
+2026-06-18T23:20:31.3028723Z 23:20:31.301 INFO  Sensor IaC GitHub Actions Sensor [iac]
+2026-06-18T23:20:31.3285652Z 23:20:31.327 INFO  1 source file to be analyzed
+2026-06-18T23:20:31.4160297Z 23:20:31.414 INFO  1/1 source file has been analyzed
+2026-06-18T23:20:31.4174892Z 23:20:31.416 INFO  Sensor IaC GitHub Actions Sensor [iac] (done) | time=114ms
+2026-06-18T23:20:31.4176484Z 23:20:31.416 INFO  Sensor IaC actionlint report Sensor [iac]
+2026-06-18T23:20:31.4185745Z 23:20:31.417 INFO  Sensor IaC actionlint report Sensor [iac] (done) | time=0ms
+2026-06-18T23:20:31.4226102Z 23:20:31.417 INFO  Sensor IaC Azure Pipelines Sensor [iac]
+2026-06-18T23:20:31.4322756Z 23:20:31.426 INFO  There are no files to be analyzed for the Azure Pipelines language
+2026-06-18T23:20:31.4333456Z 23:20:31.426 INFO  Sensor IaC Azure Pipelines Sensor [iac] (done) | time=7ms
+2026-06-18T23:20:31.4391824Z 23:20:31.426 INFO  Sensor IaC Shell Sensor [iac]
+2026-06-18T23:20:31.4448245Z 23:20:31.427 INFO  There are no files to be analyzed for the Shell language
+2026-06-18T23:20:31.4456446Z 23:20:31.429 INFO  Sensor IaC Shell Sensor [iac] (done) | time=1ms
+2026-06-18T23:20:31.4459467Z 23:20:31.430 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript]
+2026-06-18T23:20:32.0370566Z 23:20:32.035 INFO  Detected os: Windows Server 2025 arch: amd64 alpine: false. Platform: WIN_X64
+2026-06-18T23:20:32.0441514Z 23:20:32.038 INFO  Deploy location C:\Users\runneradmin\.sonar\js\node-runtime, tagetRuntime: C:\Users\runneradmin\.sonar\js\node-runtime\node.exe,  version: C:\Users\runneradmin\.sonar\js\node-runtime\version.txt
+2026-06-18T23:20:34.4200221Z 23:20:34.418 INFO  Using embedded Node.js runtime.
+2026-06-18T23:20:34.4202611Z 23:20:34.419 INFO  Using Node.js executable: 'C:\Users\runneradmin\.sonar\js\node-runtime\node.exe'.
+2026-06-18T23:20:36.6065896Z 23:20:36.605 INFO  Memory configuration: OS (16378 MB), Node.js (4288 MB).
+2026-06-18T23:20:36.6238023Z 23:20:36.622 INFO  gRPC analyze-project server listening on 127.0.0.1:56383
+2026-06-18T23:20:36.8060761Z 23:20:36.804 INFO  Plugin version: [12.5.0.41048]
+2026-06-18T23:20:38.9571477Z 23:20:38.956 INFO  Found 0 tsconfig.json file(s): []
+2026-06-18T23:20:40.5537504Z 23:20:40.552 INFO  3 source files to be analyzed
+2026-06-18T23:20:40.5552885Z 23:20:40.552 INFO  Analyzing 1 file(s) using default options [lib: lib.esnext.d.ts, lib.dom.d.ts]
+2026-06-18T23:20:40.5554314Z 23:20:40.552 INFO  No boundary descriptors defined
+2026-06-18T23:20:40.5555250Z 23:20:40.553 INFO  3/3 source files have been analyzed
+2026-06-18T23:20:40.6953451Z 23:20:40.693 INFO  JasminAstConsumer done
+2026-06-18T23:20:40.6954533Z 23:20:40.694 INFO  Hit the cache for 0 out of 6
+2026-06-18T23:20:40.6956380Z 23:20:40.694 INFO  Miss the cache for 6 out of 6: ANALYSIS_MODE_INELIGIBLE [6/6]
+2026-06-18T23:20:40.6957642Z 23:20:40.694 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript] (done) | time=9266ms
+2026-06-18T23:20:40.6962817Z 23:20:40.695 INFO  Sensor KotlinModuleSecuritySensor [securitykotlinfrontend]
+2026-06-18T23:20:40.6969818Z 23:20:40.695 INFO  Sensor KotlinModuleSecuritySensor [securitykotlinfrontend] (done) | time=0ms
+2026-06-18T23:20:40.6971131Z 23:20:40.696 INFO  Sensor KotlinAndroidConfigurationSensor [securitykotlinfrontend]
+2026-06-18T23:20:40.8002768Z 23:20:40.799 INFO  Sensor KotlinAndroidConfigurationSensor [securitykotlinfrontend] (done) | time=102ms
+2026-06-18T23:20:40.8005819Z 23:20:40.799 INFO  Sensor HTML [web]
+2026-06-18T23:20:40.8842570Z 23:20:40.882 INFO  Sensor HTML [web] (done) | time=82ms
+2026-06-18T23:20:40.8844688Z 23:20:40.882 INFO  Sensor XML Sensor [xml]
+2026-06-18T23:20:40.8877581Z 23:20:40.886 INFO  7 source files to be analyzed
+2026-06-18T23:20:41.0608456Z 23:20:41.060 INFO  7/7 source files have been analyzed
+2026-06-18T23:20:41.0609340Z 23:20:41.060 INFO  Sensor XML Sensor [xml] (done) | time=177ms
+2026-06-18T23:20:41.0610296Z 23:20:41.060 INFO  Sensor JasminFileCollectorSensor [jasmin]
+2026-06-18T23:20:41.0628789Z 23:20:41.061 INFO  Sensor JasminFileCollectorSensor [jasmin] (done) | time=1ms
+2026-06-18T23:20:41.0631542Z 23:20:41.061 INFO  Sensor IaC Kubernetes Sensor [iac]
+2026-06-18T23:20:41.1257157Z 23:20:41.122 INFO  There are no files to be analyzed for the Kubernetes language
+2026-06-18T23:20:41.1286369Z 23:20:41.122 INFO  Sensor IaC Kubernetes Sensor [iac] (done) | time=60ms
+2026-06-18T23:20:41.1290520Z 23:20:41.123 INFO  Sensor IaC YAML Sensor [iac]
+2026-06-18T23:20:41.1302286Z 23:20:41.123 INFO  Sensor for language "YAML" is disabled by a feature flag. You can enable it by setting "sonar.featureflag.cloud-security-enable-generic-yaml-and-json-analyzer" to true.
+2026-06-18T23:20:41.1310505Z 23:20:41.124 INFO  Sensor IaC YAML Sensor [iac] (done) | time=0ms
+2026-06-18T23:20:41.1313135Z 23:20:41.125 INFO  Sensor IaC JSON Sensor [iac]
+2026-06-18T23:20:41.1317495Z 23:20:41.128 INFO  Sensor for language "JSON" is disabled by a feature flag. You can enable it by setting "sonar.featureflag.cloud-security-enable-generic-yaml-and-json-analyzer" to true.
+2026-06-18T23:20:41.1325058Z 23:20:41.128 INFO  Sensor IaC JSON Sensor [iac] (done) | time=2ms
+2026-06-18T23:20:41.1326848Z 23:20:41.129 INFO  Sensor Serverless configuration file sensor [security]
+2026-06-18T23:20:41.1328366Z 23:20:41.130 INFO  0 Serverless function entries were found in the project
+2026-06-18T23:20:41.1346782Z 23:20:41.133 INFO  0 Serverless function handlers were kept as entrypoints
+2026-06-18T23:20:41.1362178Z 23:20:41.133 INFO  Sensor Serverless configuration file sensor [security] (done) | time=4ms
+2026-06-18T23:20:41.1366452Z 23:20:41.133 INFO  Sensor AWS SAM template file sensor [security]
+2026-06-18T23:20:41.1420443Z 23:20:41.139 INFO  Sensor AWS SAM template file sensor [security] (done) | time=5ms
+2026-06-18T23:20:41.1426209Z 23:20:41.140 INFO  Sensor Generic Coverage Report
+2026-06-18T23:20:41.1439788Z 23:20:41.141 INFO  Parsing D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard\coverage\lcov.info
+2026-06-18T23:20:41.7711142Z 23:20:41.768 ERROR Error during parsing of the generic coverage report 'D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard\coverage\lcov.info'. Look at SonarQube documentation to know the expected XML format.
+2026-06-18T23:20:42.2374020Z 23:20:42.236 INFO  EXECUTION FAILURE
+2026-06-18T23:20:42.2380472Z 23:20:42.237 INFO  Total time: 53.995s
+2026-06-18T23:20:42.7466714Z ##[error]Action failed: The process 'C:\hostedtoolcache\windows\sonar-scanner-cli\8.1.0.6389\windows-x64\bin\sonar-scanner.bat' failed with exit code 1

@@ -1,0 +1,228 @@
+﻿2026-06-18T22:54:39.0239626Z Current runner version: '2.335.1'
+2026-06-18T22:54:39.0263387Z ##[group]Runner Image Provisioner
+2026-06-18T22:54:39.0264192Z Hosted Compute Agent
+2026-06-18T22:54:39.0264777Z Version: 20260611.554
+2026-06-18T22:54:39.0265388Z Commit: 5e0782fdc9014723d3be820dd114dd31555c2bd1
+2026-06-18T22:54:39.0266078Z Build Date: 2026-06-11T21:40:46Z
+2026-06-18T22:54:39.0267122Z Worker ID: {fbdd1a8a-e709-425f-882d-2852c0fefa18}
+2026-06-18T22:54:39.0267827Z Azure Region: westcentralus
+2026-06-18T22:54:39.0268416Z ##[endgroup]
+2026-06-18T22:54:39.0269848Z ##[group]Operating System
+2026-06-18T22:54:39.0270615Z Microsoft Windows Server 2025
+2026-06-18T22:54:39.0271252Z 10.0.26100
+2026-06-18T22:54:39.0271740Z Datacenter
+2026-06-18T22:54:39.0272279Z ##[endgroup]
+2026-06-18T22:54:39.0272832Z ##[group]Runner Image
+2026-06-18T22:54:39.0273382Z Image: windows-2025-vs2026
+2026-06-18T22:54:39.0273977Z Version: 20260614.141.1
+2026-06-18T22:54:39.0275447Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260614.141/images/windows/Windows2025-VS2026-Readme.md
+2026-06-18T22:54:39.0277098Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260614.141
+2026-06-18T22:54:39.0278198Z ##[endgroup]
+2026-06-18T22:54:39.0279405Z ##[group]GITHUB_TOKEN Permissions
+2026-06-18T22:54:39.0281412Z Contents: read
+2026-06-18T22:54:39.0282155Z Metadata: read
+2026-06-18T22:54:39.0282723Z Packages: read
+2026-06-18T22:54:39.0283258Z ##[endgroup]
+2026-06-18T22:54:39.0285412Z Secret source: Actions
+2026-06-18T22:54:39.0286109Z Prepare workflow directory
+2026-06-18T22:54:39.0676787Z Prepare all required actions
+2026-06-18T22:54:39.0718890Z Getting action download info
+2026-06-18T22:54:39.3959291Z Download action repository 'actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-06-18T22:54:39.5194481Z Download action repository 'subosito/flutter-action@v2' (SHA:1a449444c387b1966244ae4d4f8c696479add0b2)
+2026-06-18T22:54:39.9296915Z Download action repository 'SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995' (SHA:7006c4492b2e0ee0f816d36501671557c97f5995)
+2026-06-18T22:54:40.6382843Z Getting action download info
+2026-06-18T22:54:40.7457830Z Download action repository 'actions/cache@v5' (SHA:27d5ce7f107fe9357f9df03efb73ab90386fccae)
+2026-06-18T22:54:40.9448532Z Complete job name: SonarQube
+2026-06-18T22:54:41.0841773Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-18T22:54:41.0853924Z ##[group]Run actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+2026-06-18T22:54:41.0855328Z with:
+2026-06-18T22:54:41.0855978Z   fetch-depth: 0
+2026-06-18T22:54:41.0856809Z   repository: Markst0105/flutter_petshop_dashboard
+2026-06-18T22:54:41.0865528Z   token: ***
+2026-06-18T22:54:41.0866209Z   ssh-strict: true
+2026-06-18T22:54:41.0866903Z   ssh-user: git
+2026-06-18T22:54:41.0867629Z   persist-credentials: true
+2026-06-18T22:54:41.0868424Z   clean: true
+2026-06-18T22:54:41.0869412Z   sparse-checkout-cone-mode: true
+2026-06-18T22:54:41.0870291Z   fetch-tags: false
+2026-06-18T22:54:41.0871234Z   show-progress: true
+2026-06-18T22:54:41.0871999Z   lfs: false
+2026-06-18T22:54:41.0872665Z   submodules: false
+2026-06-18T22:54:41.0873386Z   set-safe-directory: true
+2026-06-18T22:54:41.0874443Z ##[endgroup]
+2026-06-18T22:54:41.2271818Z Syncing repository: Markst0105/flutter_petshop_dashboard
+2026-06-18T22:54:41.2274288Z ##[group]Getting Git version info
+2026-06-18T22:54:41.2275622Z Working directory is 'D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard'
+2026-06-18T22:54:41.3088024Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-06-18T22:54:41.4498404Z git version 2.54.0.windows.1
+2026-06-18T22:54:41.4545081Z ##[endgroup]
+2026-06-18T22:54:41.4563631Z Temporarily overriding HOME='D:\a\_temp\dd73a1f4-4651-4256-a616-4d44e1074478' before making global git config changes
+2026-06-18T22:54:41.4565863Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-18T22:54:41.4573753Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard
+2026-06-18T22:54:41.4852183Z Deleting the contents of 'D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard'
+2026-06-18T22:54:41.4858864Z ##[group]Initializing the repository
+2026-06-18T22:54:41.4866710Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard
+2026-06-18T22:54:41.5278994Z Initialized empty Git repository in D:/a/flutter_petshop_dashboard/flutter_petshop_dashboard/.git/
+2026-06-18T22:54:41.5318947Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/Markst0105/flutter_petshop_dashboard
+2026-06-18T22:54:41.5614438Z ##[endgroup]
+2026-06-18T22:54:41.5615736Z ##[group]Disabling automatic garbage collection
+2026-06-18T22:54:41.5621965Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-06-18T22:54:41.5895082Z ##[endgroup]
+2026-06-18T22:54:41.5896268Z ##[group]Setting up auth
+2026-06-18T22:54:41.5906236Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-06-18T22:54:41.6198276Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-06-18T22:54:42.4806016Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-18T22:54:42.5090102Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-06-18T22:54:43.0475734Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-18T22:54:43.0764099Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-06-18T22:54:43.5744136Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-06-18T22:54:43.6034750Z ##[endgroup]
+2026-06-18T22:54:43.6035757Z ##[group]Fetching the repository
+2026-06-18T22:54:43.6048591Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-06-18T22:54:47.4480800Z From https://github.com/Markst0105/flutter_petshop_dashboard
+2026-06-18T22:54:47.4481993Z  * [new branch]      ai_main_31ab6f26199846c6a0c2 -> origin/ai_main_31ab6f26199846c6a0c2
+2026-06-18T22:54:47.4483234Z  * [new branch]      ai_main_caef691da73b453d88c1 -> origin/ai_main_caef691da73b453d88c1
+2026-06-18T22:54:47.4484272Z  * [new branch]      coverage_testing     -> origin/coverage_testing
+2026-06-18T22:54:47.4485277Z  * [new branch]      main                 -> origin/main
+2026-06-18T22:54:47.4486125Z  * [new branch]      supabase_integration -> origin/supabase_integration
+2026-06-18T22:54:47.4487944Z  * [new branch]      test_coverage        -> origin/test_coverage
+2026-06-18T22:54:47.4489032Z  * [new tag]         v0.9                 -> v0.9
+2026-06-18T22:54:47.4751777Z [command]"C:\Program Files\Git\bin\git.exe" branch --list --remote origin/test_coverage
+2026-06-18T22:54:47.5029232Z   origin/test_coverage
+2026-06-18T22:54:47.5079624Z [command]"C:\Program Files\Git\bin\git.exe" rev-parse refs/remotes/origin/test_coverage
+2026-06-18T22:54:47.5360064Z 270f7f48dcfb0c958b61887860a94e71502f86f1
+2026-06-18T22:54:47.5396102Z ##[endgroup]
+2026-06-18T22:54:47.5396948Z ##[group]Determining the checkout info
+2026-06-18T22:54:47.5398047Z ##[endgroup]
+2026-06-18T22:54:47.5410519Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-06-18T22:54:47.5752677Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-06-18T22:54:47.6058612Z ##[group]Checking out the ref
+2026-06-18T22:54:47.6069720Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B test_coverage refs/remotes/origin/test_coverage
+2026-06-18T22:54:47.6881445Z Switched to a new branch 'test_coverage'
+2026-06-18T22:54:47.6899508Z branch 'test_coverage' set up to track 'origin/test_coverage'.
+2026-06-18T22:54:47.6946408Z ##[endgroup]
+2026-06-18T22:54:47.7344788Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-06-18T22:54:47.7653361Z 270f7f48dcfb0c958b61887860a94e71502f86f1
+2026-06-18T22:54:47.8280170Z ##[group]Run subosito/flutter-action@v2
+2026-06-18T22:54:47.8280539Z with:
+2026-06-18T22:54:47.8280722Z   channel: stable
+2026-06-18T22:54:47.8280908Z   architecture: X64
+2026-06-18T22:54:47.8281090Z   cache: false
+2026-06-18T22:54:47.8281279Z   pub-cache-path: default
+2026-06-18T22:54:47.8281505Z   dry-run: false
+2026-06-18T22:54:47.8281759Z   git-source: https://github.com/flutter/flutter.git
+2026-06-18T22:54:47.8282059Z ##[endgroup]
+2026-06-18T22:54:47.8512386Z ##[group]Run chmod +x "$GITHUB_ACTION_PATH/setup.sh"
+2026-06-18T22:54:47.8512790Z [36;1mchmod +x "$GITHUB_ACTION_PATH/setup.sh"[0m
+2026-06-18T22:54:47.8534771Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-06-18T22:54:47.8535626Z ##[endgroup]
+2026-06-18T22:54:47.9394832Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh -p \
+2026-06-18T22:54:47.9395404Z [36;1m$GITHUB_ACTION_PATH/setup.sh -p \[0m
+2026-06-18T22:54:47.9395834Z [36;1m  -n '' \[0m
+2026-06-18T22:54:47.9396175Z [36;1m  -f '' \[0m
+2026-06-18T22:54:47.9396463Z [36;1m  -a 'X64' \[0m
+2026-06-18T22:54:47.9396780Z [36;1m  -k '' \[0m
+2026-06-18T22:54:47.9397056Z [36;1m  -c '' \[0m
+2026-06-18T22:54:47.9397332Z [36;1m  -l '' \[0m
+2026-06-18T22:54:47.9397623Z [36;1m  -d 'default' \[0m
+2026-06-18T22:54:47.9398081Z [36;1m  -g 'https://github.com/flutter/flutter.git' \[0m
+2026-06-18T22:54:47.9398560Z [36;1m  stable[0m
+2026-06-18T22:54:47.9416169Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-06-18T22:54:47.9416818Z ##[endgroup]
+2026-06-18T22:54:59.0551612Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh \
+2026-06-18T22:54:59.0551936Z [36;1m$GITHUB_ACTION_PATH/setup.sh \[0m
+2026-06-18T22:54:59.0552200Z [36;1m  -n '3.44.2' \[0m
+2026-06-18T22:54:59.0552415Z [36;1m  -a 'x64' \[0m
+2026-06-18T22:54:59.0552716Z [36;1m  -c 'C:\hostedtoolcache\windows\flutter\stable-3.44.2-x64' \[0m
+2026-06-18T22:54:59.0553145Z [36;1m  -d 'C:\Users\runneradmin\AppData\Local\Pub\Cache' \[0m
+2026-06-18T22:54:59.0553450Z [36;1m  stable[0m
+2026-06-18T22:54:59.0566199Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-06-18T22:54:59.0566590Z ##[endgroup]
+2026-06-18T22:55:01.4347893Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-06-18T22:55:01.4348806Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-06-18T22:55:01.4349544Z 
+2026-06-18T22:55:02.4347274Z   0      0   0      0   0      0      0      0                              0
+2026-06-18T22:55:03.4350329Z  17  1.76G  17 313.9M   0      0 313.7M      0   00:05   00:01   00:04 313.9M
+2026-06-18T22:55:04.4344385Z  47  1.76G  47 853.9M   0      0 426.7M      0   00:04   00:02   00:02 426.8M
+2026-06-18T22:55:05.1399522Z  77  1.76G  77  1.37G   0      0 470.2M      0   00:03   00:03         470.3M
+2026-06-18T22:55:05.1400146Z 100  1.76G 100  1.76G   0      0 488.5M      0   00:03   00:03         470.3M
+2026-06-18T22:55:05.1402315Z 100  1.76G 100  1.76G   0      0 488.5M      0   00:03   00:03         470.3M
+2026-06-18T22:55:05.1403670Z 100  1.76G 100  1.76G   0      0 488.5M      0   00:03   00:03         470.3M
+2026-06-18T22:57:04.5664227Z ##[group]Run flutter pub get
+2026-06-18T22:57:04.5664623Z [36;1mflutter pub get[0m
+2026-06-18T22:57:04.5664914Z [36;1mflutter build web[0m
+2026-06-18T22:57:06.4747821Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-06-18T22:57:06.4748340Z env:
+2026-06-18T22:57:06.4748794Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.44.2-x64/flutter
+2026-06-18T22:57:06.4749421Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2026-06-18T22:57:06.4749869Z ##[endgroup]
+2026-06-18T22:57:15.2193137Z Building flutter tool... 
+2026-06-18T22:57:15.2230513Z Running pub upgrade... 
+2026-06-18T22:57:15.2569791Z Resolving dependencies...
+2026-06-18T22:57:15.8056149Z Downloading packages...
+2026-06-18T22:57:26.0675332Z Got dependencies.
+2026-06-18T22:57:42.5171466Z Resolving dependencies...
+2026-06-18T22:57:43.1215649Z Downloading packages...
+2026-06-18T22:57:57.6479662Z   _fe_analyzer_shared 93.0.0 (104.0.0 available)
+2026-06-18T22:57:57.6481324Z   analyzer 10.0.1 (14.0.0 available)
+2026-06-18T22:57:57.6481913Z   app_links 7.0.0 (7.1.2 available)
+2026-06-18T22:57:57.6482542Z   app_links_platform_interface 2.0.2 (2.0.3 available)
+2026-06-18T22:57:57.6483451Z   dart_style 3.1.7 (3.1.9 available)
+2026-06-18T22:57:57.6484030Z   matcher 0.12.19 (0.12.20 available)
+2026-06-18T22:57:57.6484597Z > meta 1.18.0 (was 1.17.0) (1.18.3 available)
+2026-06-18T22:57:57.6485143Z   mockito 5.6.4 (5.7.0 available)
+2026-06-18T22:57:57.6485690Z   package_config 2.2.0 (3.0.0 available)
+2026-06-18T22:57:57.6486300Z   shared_preferences_android 2.4.23 (2.4.26 available)
+2026-06-18T22:57:57.6486915Z > test_api 0.7.11 (was 0.7.10) (0.7.12 available)
+2026-06-18T22:57:57.6487508Z   url_launcher_android 6.3.30 (6.3.32 available)
+2026-06-18T22:57:57.6488059Z   vector_math 2.2.0 (2.4.0 available)
+2026-06-18T22:57:57.6488575Z Changed 2 dependencies!
+2026-06-18T22:57:57.6489531Z 13 packages have newer versions incompatible with dependency constraints.
+2026-06-18T22:57:57.6490405Z Try `flutter pub outdated` for more information.
+2026-06-18T22:58:45.4258921Z Compiling lib\main.dart for the Web...                          
+2026-06-18T22:58:45.4268669Z Wasm dry run findings:
+2026-06-18T22:58:45.4270513Z Found incompatibilities with WebAssembly.
+2026-06-18T22:58:45.4270962Z 
+2026-06-18T22:58:45.4271423Z package:ua_client_hints/ua_client_hints_web.dart 4:1 - dart:html unsupported (0)
+2026-06-18T22:58:45.4272068Z 
+2026-06-18T22:58:45.4272992Z Consider addressing these issues to enable wasm builds. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+2026-06-18T22:58:45.4273539Z 
+2026-06-18T22:58:45.4324055Z Use --no-wasm-dry-run to disable these warnings.
+2026-06-18T22:58:47.2651161Z Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 1472 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+2026-06-18T22:58:47.2682877Z Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 10200 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+2026-06-18T22:58:47.6246548Z Compiling lib\main.dart for the Web...                             47.9s
+2026-06-18T22:58:47.6256744Z √ Built build\web
+2026-06-18T22:58:47.7755053Z ##[group]Run flutter test --machine --coverage > tests.output
+2026-06-18T22:58:47.7755549Z [36;1mflutter test --machine --coverage > tests.output[0m
+2026-06-18T22:58:47.7815446Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-06-18T22:58:47.7815790Z env:
+2026-06-18T22:58:47.7816082Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.44.2-x64/flutter
+2026-06-18T22:58:47.7816515Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2026-06-18T22:58:47.7816814Z ##[endgroup]
+2026-06-18T22:59:16.8606872Z ##[group]Run dart run coverage:format_coverage --lcov --in=coverage/lcov.info --out=coverage/lcov.info --report-on=lib
+2026-06-18T22:59:16.8607780Z [36;1mdart run coverage:format_coverage --lcov --in=coverage/lcov.info --out=coverage/lcov.info --report-on=lib[0m
+2026-06-18T22:59:16.8668982Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-06-18T22:59:16.8669412Z env:
+2026-06-18T22:59:16.8669771Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.44.2-x64/flutter
+2026-06-18T22:59:16.8670307Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2026-06-18T22:59:16.8670666Z ##[endgroup]
+2026-06-18T22:59:17.1412910Z Could not find package `coverage` or file `coverage:format_coverage`
+2026-06-18T22:59:17.2720036Z ##[error]Process completed with exit code 1.
+2026-06-18T22:59:17.3035884Z Post job cleanup.
+2026-06-18T22:59:17.3212538Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-18T22:59:17.3214295Z Post job cleanup.
+2026-06-18T22:59:17.5217632Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-06-18T22:59:17.5511541Z git version 2.54.0.windows.1
+2026-06-18T22:59:17.5596812Z Temporarily overriding HOME='D:\a\_temp\262aef97-c37c-4b4c-b42e-6fe83c4af2e8' before making global git config changes
+2026-06-18T22:59:17.5598240Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-18T22:59:17.5612580Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\flutter_petshop_dashboard\flutter_petshop_dashboard
+2026-06-18T22:59:17.5926548Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-06-18T22:59:17.6231941Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-06-18T22:59:18.1698903Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-18T22:59:18.1957693Z http.https://github.com/.extraheader
+2026-06-18T22:59:18.1999678Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-06-18T22:59:18.2291092Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-06-18T22:59:18.7507184Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-18T22:59:18.7797433Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-06-18T22:59:19.3103376Z Cleaning up orphan processes
+2026-06-18T22:59:19.3559069Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

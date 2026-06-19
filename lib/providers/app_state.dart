@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/booking.dart';
+import '../repositories/booking_repository.dart';
 import '../utils/web_logger.dart';
 
 class AppState extends ChangeNotifier {
@@ -13,6 +13,8 @@ class AppState extends ChangeNotifier {
   String? _lastError;
   bool _isLoading = false;
 
+  final BookingRepository repository;
+
   bool get isLoggedIn => _isLoggedIn;
   String get currentScreen => _currentScreen;
   List<Booking> get bookings => _bookings;
@@ -20,9 +22,7 @@ class AppState extends ChangeNotifier {
   String? get lastError => _lastError;
   bool get isLoading => _isLoading;
 
-  final SupabaseClient supabase = Supabase.instance.client;
-
-  AppState() {
+  AppState({required this.repository}) {
     _initializeAsync();
   }
 
@@ -40,96 +40,12 @@ class AppState extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await supabase.from('booking').select('''
-        bookingid,
-        datebooking,
-        timebooking,
-        duration,
-        pet (
-          name,
-          type,
-          size,
-          petowner (
-            name,
-            cellnumber
-          )
-        ),
-        booking_service (
-          servicename
-        )
-      ''').timeout(const Duration(seconds: 15));
+      _bookings = await repository.getBookings();
 
-      WebLogger.info('[Supabase] Query successful, received ${(response as List).length} bookings');
-
-      _bookings = (response as List).map((b) {
-        String ownerName = '';
-        String ownerPhone = '';
-        String petName = '';
-        String petType = 'Unknown';
-        String petSize = 'medium';
-        List<String> procedures = [];
-
-        var petObj = b['pet'];
-        if (petObj != null) {
-          petName = petObj['name'] ?? '';
-          petType = petObj['type'] ?? 'Unknown';
-          petSize = petObj['size'] ?? 'medium';
-
-          var ownerObj = petObj['petowner'];
-          if (ownerObj != null) {
-            ownerName = ownerObj['name'] ?? '';
-            ownerPhone = ownerObj['cellnumber'] ?? '';
-          }
-        }
-
-        var servicesObj = b['booking_service'] as List?;
-        if (servicesObj != null) {
-          procedures = servicesObj.map((s) => s['servicename'].toString()).toList();
-        }
-
-        String dateStr = b['datebooking'].toString().split('T').first;
-        DateTime parsedDate = DateTime.tryParse(dateStr) ?? DateTime.now();
-        DateTime date = DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
-        String time = b['timebooking'].toString();
-        String startHourStr = time.length >= 5 ? time.substring(0, 5) : time;
-        List<String> parts = startHourStr.split(':');
-        double startHourD = 9.0;
-        if (parts.length >= 2) {
-          startHourD = double.tryParse(parts[0])! + (double.tryParse(parts[1])! / 60.0);
-        }
-
-        double bDuration = (b['duration'] ?? 1).toDouble();
-
-        int dHours = bDuration.floor();
-        int dMins = ((bDuration - dHours) * 60).round();
-        int eHours = int.parse(parts[0]) + dHours;
-        int eMins = int.parse(parts[1]) + dMins;
-        if (eMins >= 60) {
-          eHours += (eMins ~/ 60);
-          eMins = eMins % 60;
-        }
-        String endTimeStr = '${eHours.toString().padLeft(2, '0')}:${eMins.toString().padLeft(2, '0')}';
-
-        return Booking(
-          id: b['bookingid'].toString(),
-          ownerName: ownerName,
-          ownerPhone: ownerPhone,
-          petName: petName,
-          petType: petType,
-          petSize: petSize,
-          startTime: startHourStr,
-          endTime: endTimeStr,
-          startHour: startHourD,
-          duration: bDuration,
-          procedures: procedures,
-          status: BookingStatus.upcoming,
-          comments: '',
-          date: date,
-        );
-      }).toList();
+      WebLogger.info('[Repository] Query successful, received ${_bookings.length} bookings');
 
       if (_bookings.isEmpty) {
-        WebLogger.warn('[Supabase] No bookings found, using fallback mock data');
+        WebLogger.warn('[Repository] No bookings found, using fallback mock data');
         _bookings = todayBookings;
       }
 
@@ -146,10 +62,10 @@ class AppState extends ChangeNotifier {
       notifyListeners();
     } on TimeoutException catch (e) {
       _lastError = 'Connection timeout. Server took too long to respond.';
-      WebLogger.warn('[Supabase] Timeout: $e');
+      WebLogger.warn('[Repository] Timeout: $e');
 
       if (retryCount < 2) {
-        WebLogger.info('[Supabase] Retrying... (attempt ${retryCount + 1}/2)');
+        WebLogger.info('[Repository] Retrying... (attempt ${retryCount + 1}/2)');
         await Future.delayed(Duration(seconds: 2 * (retryCount + 1)));
         await loadBookings(retryCount: retryCount + 1);
       } else {
@@ -163,7 +79,7 @@ class AppState extends ChangeNotifier {
       _lastError = errorMessage;
       _isLoading = false;
 
-      WebLogger.error('[Supabase] Error loading bookings', e);
+      WebLogger.error('[Repository] Error loading bookings', e);
 
       if (errorMessage.contains('Failed host lookup') || errorMessage.contains('No such host')) {
         _loadingStatus = 'Network Error: Cannot reach Supabase. Check your internet connection or DNS settings.';

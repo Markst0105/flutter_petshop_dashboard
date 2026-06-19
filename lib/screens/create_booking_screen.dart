@@ -187,16 +187,18 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
+    return Material(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0x1A000000)),
+        side: const BorderSide(color: Color(0x1A000000)),
       ),
-      padding: const EdgeInsets.all(32.0),
-      child: Form(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Form(
         key: _formKey,
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -349,6 +351,8 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
             ),
           ],
         ),
+        ),
+      ),
       ),
     );
   }
