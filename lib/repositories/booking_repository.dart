@@ -81,7 +81,7 @@ class BookingRepository {
     required int petId,
     required String date,
     required String time,
-    required double duration,
+    required int duration,
   }) async {
     final response = await supabaseClient
         .from('booking')

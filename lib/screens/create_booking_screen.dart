@@ -98,7 +98,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
           petId: petID,
           date: DateFormat('yyyy-MM-dd').format(_selectedDate),
           time: startTimeStr,
-          duration: 1.0,
+          duration: 1,
         );
         final bookingID = bookingRes['bookingid'];
 
@@ -149,6 +149,158 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
     }
   }
 
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Provider.of<AppState>(context, listen: false)
+                .navigateToScreen('calendar');
+          },
+        ),
+        const SizedBox(width: 8),
+        const Text(
+          'Criar Agendamento',
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF0A0A0A),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _buildOwnerDetails(BuildContext context) {
+    return [
+      Text('Detalhes do Dono',
+          style: Theme.of(context).textTheme.titleLarge),
+      const SizedBox(height: 16),
+      TextFormField(
+        decoration: const InputDecoration(labelText: 'CPF do Dono'),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Por favor, insira o CPF do dono.';
+          }
+          return null; // Basic validation, can be improved
+        },
+        onSaved: (value) => _ownerCpf = value!,
+      ),
+      const SizedBox(height: 8),
+      TextFormField(
+        decoration: const InputDecoration(labelText: 'Nome do Dono'),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Por favor, insira o nome do dono.';
+          }
+          return null;
+        },
+        onSaved: (value) => _ownerName = value!,
+      ),
+      const SizedBox(height: 8),
+      TextFormField(
+        decoration: const InputDecoration(labelText: 'Telefone do Dono'),
+        keyboardType: TextInputType.phone,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Por favor, insira o telefone do dono.';
+          }
+          return null;
+        },
+        onSaved: (value) => _ownerPhone = value!,
+      ),
+    ];
+  }
+
+  List<Widget> _buildPetDetails(BuildContext context) {
+    return [
+      Text('Detalhes do Pet',
+          style: Theme.of(context).textTheme.titleLarge),
+      const SizedBox(height: 16),
+      TextFormField(
+        decoration: const InputDecoration(labelText: 'Nome do Pet'),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Por favor, insira o nome do pet.';
+          }
+          return null;
+        },
+        onSaved: (value) => _petName = value!,
+      ),
+      const SizedBox(height: 8),
+      DropdownButtonFormField<String>(
+        decoration: const InputDecoration(labelText: 'Espécie do Pet'),
+        value: _petSpecies,
+        items: ['Cachorro', 'Gato', 'Outro']
+            .map((species) => DropdownMenuItem(
+                  value: species,
+                  child: Text(species),
+                ))
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            _petSpecies = value!;
+          });
+        },
+      ),
+      const SizedBox(height: 8),
+      TextFormField(
+        decoration: const InputDecoration(labelText: 'Raça do Pet'),
+        onSaved: (value) => _petBreed = value ?? '',
+      ),
+    ];
+  }
+
+  List<Widget> _buildBookingDetails(BuildContext context) {
+    return [
+      Text('Detalhes do Agendamento',
+          style: Theme.of(context).textTheme.titleLarge),
+      const SizedBox(height: 16),
+      ListTile(
+        title: Text(
+            'Data: ${DateFormat('dd/MM/yyyy').format(_selectedDate)}'),
+        trailing: const Icon(Icons.calendar_today),
+        onTap: () => _selectDate(context),
+      ),
+      ListTile(
+        title: Text('Hora: ${_selectedTime.format(context)}'),
+        trailing: const Icon(Icons.access_time),
+        onTap: () => _selectTime(context),
+      ),
+      const SizedBox(height: 16),
+      Text('Serviços', style: Theme.of(context).textTheme.titleMedium),
+      Wrap(
+        spacing: 8.0,
+        children: _services
+            .map((service) => ChoiceChip(
+                  label: Text(service.name),
+                  selected: _selectedServices.contains(service),
+                  onSelected: (selected) {
+                    setState(() {
+                      if (selected) {
+                        _selectedServices.add(service);
+                      } else {
+                        _selectedServices.remove(service);
+                      }
+                    });
+                  },
+                ))
+            .toList(),
+      ),
+      const SizedBox(height: 24),
+      TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Observações',
+          alignLabelWithHint: true,
+        ),
+        maxLines: 3,
+        onSaved: (value) => _observations = value ?? '',
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -165,143 +317,13 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
           child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Provider.of<AppState>(context, listen: false)
-                        .navigateToScreen('calendar');
-                  },
-                ),
-                const SizedBox(width: 8),
-                const Text(
-                  'Criar Agendamento',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF0A0A0A),
-                  ),
-                ),
-              ],
-            ),
+            _buildHeader(context),
             const SizedBox(height: 32),
-            Text('Detalhes do Dono',
-                style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'CPF do Dono'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira o CPF do dono.';
-                }
-                return null; // Basic validation, can be improved
-              },
-              onSaved: (value) => _ownerCpf = value!,
-            ),
-            const SizedBox(height: 8),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Nome do Dono'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira o nome do dono.';
-                }
-                return null;
-              },
-              onSaved: (value) => _ownerName = value!,
-            ),
-            const SizedBox(height: 8),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Telefone do Dono'),
-              keyboardType: TextInputType.phone,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira o telefone do dono.';
-                }
-                return null;
-              },
-              onSaved: (value) => _ownerPhone = value!,
-            ),
+            ..._buildOwnerDetails(context),
             const SizedBox(height: 24),
-            Text('Detalhes do Pet',
-                style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Nome do Pet'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira o nome do pet.';
-                }
-                return null;
-              },
-              onSaved: (value) => _petName = value!,
-            ),
-            const SizedBox(height: 8),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: 'Espécie do Pet'),
-              value: _petSpecies,
-              items: ['Cachorro', 'Gato', 'Outro']
-                  .map((species) => DropdownMenuItem(
-                        value: species,
-                        child: Text(species),
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  _petSpecies = value!;
-                });
-              },
-            ),
-            const SizedBox(height: 8),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Raça do Pet'),
-              onSaved: (value) => _petBreed = value ?? '',
-            ),
+            ..._buildPetDetails(context),
             const SizedBox(height: 24),
-            Text('Detalhes do Agendamento',
-                style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 16),
-            ListTile(
-              title: Text(
-                  'Data: ${DateFormat('dd/MM/yyyy').format(_selectedDate)}'),
-              trailing: const Icon(Icons.calendar_today),
-              onTap: () => _selectDate(context),
-            ),
-            ListTile(
-              title: Text('Hora: ${_selectedTime.format(context)}'),
-              trailing: const Icon(Icons.access_time),
-              onTap: () => _selectTime(context),
-            ),
-            const SizedBox(height: 16),
-            Text('Serviços', style: Theme.of(context).textTheme.titleMedium),
-            Wrap(
-              spacing: 8.0,
-              children: _services
-                  .map((service) => ChoiceChip(
-                        label: Text(service.name),
-                        selected: _selectedServices.contains(service),
-                        onSelected: (selected) {
-                          setState(() {
-                            if (selected) {
-                              _selectedServices.add(service);
-                            } else {
-                              _selectedServices.remove(service);
-                            }
-                          });
-                        },
-                      ))
-                  .toList(),
-            ),
-            const SizedBox(height: 24),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Observações',
-                alignLabelWithHint: true,
-              ),
-              maxLines: 3,
-              onSaved: (value) => _observations = value ?? '',
-            ),
+            ..._buildBookingDetails(context),
             const SizedBox(height: 32),
             Center(
               child: ElevatedButton(
