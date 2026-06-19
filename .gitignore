@@ -61,6 +61,8 @@ app.*.map.json
 *macos/
 *ios/
 
+/build/test_cache/*
+
 check_coverage.dart
 *.py
 *.txt
