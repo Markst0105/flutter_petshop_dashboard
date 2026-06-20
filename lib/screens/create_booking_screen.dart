@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/booking.dart';
+
 import '../models/service.dart';
 import '../providers/app_state.dart';
 

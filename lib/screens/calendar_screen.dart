@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_state.dart';
 import '../models/booking.dart';
