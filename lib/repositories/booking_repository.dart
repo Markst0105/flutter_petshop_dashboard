@@ -169,7 +169,7 @@ class BookingRepository {
         startHourD = double.tryParse(parts[0])! + (double.tryParse(parts[1])! / 60.0);
       }
 
-      double bDuration = (b['duration'] ?? 1).toDouble();
+      double bDuration = ((b['duration'] ?? 60) as num).toDouble() / 60.0;
 
       int dHours = bDuration.floor();
       int dMins = ((bDuration - dHours) * 60).round();
