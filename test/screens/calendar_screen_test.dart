@@ -300,7 +300,7 @@ void main() {
 
       await tester.pumpWidget(createWidgetUnderTest());
 
-      expect(find.text('Duração: 1 hora'), findsOneWidget);
+      expect(find.text('Duração: 60 minutos'), findsOneWidget);
     });
 
     testWidgets('displays procedures list in booking', (WidgetTester tester) async {

@@ -77,12 +77,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         
     // Map them to the UI DayBooking representation
     return dateBookings.map((b) {
-      String durationStr = '';
-      if (b.duration == 1.0) {
-        durationStr = '1 hora';
-      } else {
-        durationStr = '${b.duration} minutos';
-      }
+      final int minutes = (b.duration * 60).round();
+      final String durationStr = '$minutes minutos';
 
       String desc = b.procedures.isNotEmpty ? b.procedures.join(', ') : 'Agendamento';
 

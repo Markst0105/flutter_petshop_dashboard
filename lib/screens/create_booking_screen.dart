@@ -97,7 +97,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
           petId: petID,
           date: DateFormat('yyyy-MM-dd').format(_selectedDate),
           time: startTimeStr,
-          duration: 1,
+          duration: 60,
         );
         final bookingID = bookingRes['bookingid'];
 
