@@ -86,20 +86,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ],
             );
           }
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 500,
-                  child: _buildScheduleCard(dateString),
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  height: 600,
-                  child: _buildDetailsCard(),
-                ),
-              ],
-            ),
+          return Column(
+            children: [
+              SizedBox(
+                height: 500,
+                child: _buildScheduleCard(dateString),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                height: 600,
+                child: _buildDetailsCard(),
+              ),
+            ],
           );
         },
       ),
