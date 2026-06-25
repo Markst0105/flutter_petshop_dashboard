@@ -47,7 +47,8 @@ class App extends StatelessWidget {
                   child: DataStatusIndicator(),
                 ),
                 Expanded(
-                  child: appState.currentScreen == 'schedule'
+                  child: (appState.currentScreen == 'schedule' ||
+                          appState.currentScreen == 'financial')
                       ? _buildScreen(appState.currentScreen)
                       : SingleChildScrollView(
                           child: Container(
